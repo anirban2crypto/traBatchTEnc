@@ -1,0 +1,59 @@
+[package]
+name = "traceable-batch-threshold"
+version = "0.1.0"
+edition = "2024"
+authors = ["Anirban Chakrabarti"]
+build = "build.rs"
+
+
+[build-dependencies]
+redb = "1.1"  # or whatever version you're using
+
+[dependencies]
+redb = "1.1"  # or whatever version you're using
+ark-poly = { version = "0.5.0", default-features = false }
+ark-ff = { version = "0.5.0", default-features = false }
+ark-ec = { version = "0.5.0", default-features = false }
+ark-std = { version = "0.5.0", default-features = false, features = [
+    "print-trace",
+    "std",
+] }
+ark-serialize = { version = "0.5.0", default-features = false, features = [
+    "derive",
+] }
+ark-bls12-381 = { version = "0.5.0", default-features = false, features = [
+    "curve",
+] }
+
+blake3 = { version = "1.0", default-features = false }
+merlin = { version = "3.0", default-features = false }
+retry = { version = "2.0", default-features = false }
+criterion = { version = "0.5", features = ["html_reports"] }
+rand = { version = "0.8", features = ["std"] }
+itertools = "0.14.0"
+ed25519-dalek = "2.0.0-rc.3"
+rand_core = "0.6"
+
+
+[features]
+asm = ["ark-ff/asm"]
+CRSTest = []
+KeyTest=[]
+
+
+
+
+#[[bench]]
+#name = "encryption"
+#harness = false
+
+#[[bench]]
+#name = "partial_decryption"
+#harness = false
+
+#[[bench]]
+#name = "decrypt_all"
+#harness = false
+
+[profile.dev]
+opt-level = 3
