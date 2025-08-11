@@ -12,7 +12,7 @@ fn ensure_table(db: &Database, table: TableDefinition<&str, Vec<u8>>) -> Result<
         {
             write_txn
                 .open_table(table)?;  // Should be recognized with correct Redb version and imports
-            println!("{} table created.", table.name());
+            println!("{} table created .", table.name());
         }
         write_txn.commit()?;
     } else {

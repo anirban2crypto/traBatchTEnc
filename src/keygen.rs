@@ -1,9 +1,13 @@
-use ark_ec::{pairing::Pairing, scalar_mul::ScalarMul, PrimeGroup};
-use ark_poly::{domain::EvaluationDomain, Radix2EvaluationDomain};
+//use ark_ec::{pairing::Pairing, scalar_mul::ScalarMul, PrimeGroup};
+use ark_ec::{pairing::Pairing,  PrimeGroup};
+//use ark_poly::{domain::EvaluationDomain, Radix2EvaluationDomain};
+use ark_poly::{domain::EvaluationDomain};
 use ark_serialize::*;
-use ark_std::{rand::RngCore, One, UniformRand, Zero};
+//use ark_std::{rand::RngCore, One, UniformRand, Zero};
+use ark_std::{rand::RngCore,  UniformRand, Zero};
 use rand::thread_rng;
-use std::{iter, vec};
+//use std::{iter, vec};
+use std::{vec};
 use crate::utils::lagrange_interp_eval;
 use std::ops::MulAssign;
 use redb::{Database,ReadableTable, TableDefinition};

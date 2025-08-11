@@ -1,16 +1,15 @@
-use ark_ec::{pairing::Pairing, VariableBaseMSM,CurveGroup,hashing::curve_maps::wb::WBMap,hashing::HashToCurve};
+use ark_ec::{pairing::Pairing, VariableBaseMSM};
 use ark_ff::FftField;
 use ark_poly::{
-    domain::DomainCoeff, univariate::DensePolynomial, DenseUVPolynomial, EvaluationDomain,
-    Polynomial, Radix2EvaluationDomain,
+   domain::DomainCoeff, univariate::DensePolynomial, DenseUVPolynomial, EvaluationDomain,
+   Polynomial, Radix2EvaluationDomain,
 };
 use ark_serialize::CanonicalSerialize;
 use ark_std::{One, Zero};
 use merlin::Transcript;
-use std::ops::Div;
+//use std::ops::Div;
+
 //use crate::dealer::CRS;
-
-
 
 pub fn hash_to_bytes<T: CanonicalSerialize>(inp: T) -> [u8; 32] {
     let mut bytes = Vec::new();
@@ -79,6 +78,56 @@ pub fn lagrange_interp_eval<F: FftField, T: DomainCoeff<F>>(
     result
 }
 
+/// given evaluations of a polynomial over given_domain
+/// interpolates the polynomial and evaluates it on target_domain
+pub fn bipart_lagrange_interp_eval<F: FftField, T: DomainCoeff<F>>(
+    given_domain: &Vec<F>,
+    target_domain: &Vec<F>,
+    evals: &Vec<T>,
+    flags: &Vec<bool>,
+) -> Vec<T> {
+    debug_assert_eq!(
+        given_domain.len(),
+        evals.len(),
+        "Evals length does not match given_domain length"
+    );
+
+    let mut result = Vec::new();
+    for &point in target_domain.iter() {
+        let mut lagrange_coeffs = vec![F::one(); given_domain.len()];
+
+        for i in 0..given_domain.len() {
+            let mut num = F::one();
+            let mut denom = F::one();
+            for j in 0..given_domain.len() {
+                if given_domain[i] != given_domain[j] {
+                    num *= point - given_domain[j];
+                    denom *= given_domain[i] - given_domain[j];
+                }
+            }
+            lagrange_coeffs[i] = num / denom;
+        }
+
+        let mut point_eval_left = T::zero();
+        let mut point_eval_right = T::zero();
+        for i in 0..given_domain.len() {
+            let mut tmp = evals[i];
+            tmp.mul_assign(lagrange_coeffs[i]);
+            if flags[i] {
+                point_eval_right += tmp;
+            } else {
+                point_eval_left += tmp;
+            }
+        }
+
+        result.push(point_eval_left);
+        result.push(point_eval_right);
+    }
+
+    result
+}
+
+
 // /// compute KZG opening proof
 // pub fn compute_opening_proof<E: Pairing>(
 //     crs: &CRS<E>,
@@ -97,72 +146,70 @@ pub fn lagrange_interp_eval<F: FftField, T: DomainCoeff<F>>(
 //     <E::G1 as VariableBaseMSM>::msm(&crs.powers_of_g, &witness_polynomial.coeffs()).unwrap()
 // }
 
-// /// Computes all the openings of a KZG commitment in O(n log n) time
-// /// See https://github.com/khovratovich/Kate/blob/master/Kate_amortized.pdf
-// /// eprint version has a bug and hasn't been updated
-// pub fn open_all_values<E: Pairing>(
-//     y: &Vec<E::G1Affine>,
-//     f: &Vec<E::ScalarField>,
-//     domain: &Radix2EvaluationDomain<E::ScalarField>,
-// ) -> Vec<E::G1> {
-//     let top_domain = Radix2EvaluationDomain::<E::ScalarField>::new(2 * domain.size()).unwrap();
+/// Computes all the openings of a KZG commitment in O(n log n) time
+/// See https://github.com/khovratovich/Kate/blob/master/Kate_amortized.pdf
+/// eprint version has a bug and hasn't been updated
+pub fn open_all_values<E: Pairing>(
+    y: &Vec<E::G1Affine>,
+    f: &Vec<E::ScalarField>,
+    domain: &Radix2EvaluationDomain<E::ScalarField>,
+) -> Vec<E::G1> {
+    let top_domain = Radix2EvaluationDomain::<E::ScalarField>::new(2 * domain.size()).unwrap();
 
-//     // use FK22 to get all the KZG proofs in O(nlog n) time =======================
-//     // f = {f0 ,f1, ..., fd}
-//     // v = {(d 0s), f1, ..., fd}
-//     let mut v = vec![E::ScalarField::zero(); domain.size() + 1];
-//     v.append(&mut f[1..f.len()].to_vec());
+    // use FK22 to get all the KZG proofs in O(nlog n) time =======================
+    // f = {f0 ,f1, ..., fd}
+    // v = {(d 0s), f1, ..., fd}
+    let mut v = vec![E::ScalarField::zero(); domain.size() + 1];
+    v.append(&mut f[1..f.len()].to_vec());
 
-//     debug_assert_eq!(v.len(), 2 * domain.size());
-//     let v = top_domain.fft(&v);
+    debug_assert_eq!(v.len(), 2 * domain.size());
+    let v = top_domain.fft(&v);
 
-//     // h = y \odot v
-//     let mut h = vec![E::G1::zero(); 2 * domain.size()];
-//     for i in 0..2 * domain.size() {
-//         h[i] = y[i] * (v[i]);
-//     }
+    // h = y \odot v
+    let mut h = vec![E::G1::zero(); 2 * domain.size()];
+    for i in 0..2 * domain.size() {
+        h[i] = y[i] * (v[i]);
+    }
 
-//     // inverse fft on h
-//     let mut h = top_domain.ifft(&h);
+    // inverse fft on h
+    let mut h = top_domain.ifft(&h);
 
-//     h.truncate(domain.size());
+    h.truncate(domain.size());
 
-//     // fft on h to get KZG proofs
-//     let pi = domain.fft(&h);
+    // fft on h to get KZG proofs
+    let pi = domain.fft(&h);
 
-//     pi
+    pi
+}
+
+// // Fixed hash-to-curve function, now uses a proper DST.
+// fn hash_msg_to_g1(msg: &[u8]) -> G1Projective {
+//     // The MapToCurveBasedHasher::new takes a DST. The hasher is then used for multiple hashes.
+//     let hasher = MapToCurveBasedHasher::<G1Projective, H2F, M2C>::new(b"TTBE_hash_to_g1_DST").unwrap();
+//     hasher.hash(msg).unwrap()
 // }
 
-// pub fn sign<E: Pairing>(sk: E::ScalarField, msg: &[u8]) -> E::G1
-// where
-//     E::G1: HashToCurve<Message = [u8]>,
-// {
-//     let map = WBMap::<E::G1>::new();
-//     let hashed = map.hash(msg);
-//     hashed.mul(sk)
+
+
+// // sign_OTS is no longer generic.
+// pub fn sign_OTS(sk: <Bls12_381 as Pairing>::ScalarField, msg: &[u8]) -> <Bls12_381 as Pairing>::G1 {
+//     let point = hash_msg_to_g1(msg);
+//     point * sk
 // }
 
-// pub fn verify<E: Pairing>(msg: &[u8], sig: E::G1, pk: E::G2) -> bool
-// where
-//     E::G1: HashToCurve<Message = [u8]>,
-// {
-//     // Hash the message to a point on G1
-//     let map = WBMap::<E::G1>::new();
-//     let hashed = map.hash(msg);
-
-//     // Perform pairing check: e(sig, G2::generator()) == e(H(msg), pk)
-//     let lhs = E::pairing(sig, E::G2::generator());
-//     let rhs = E::pairing(hashed, pk);
-
-//     lhs == rhs
+// // verify_OTS is no longer generic.
+// pub fn verify_OTS(msg: &[u8], sig: <Bls12_381 as Pairing>::G1, pk: <Bls12_381 as Pairing>::G2) -> bool {
+//     let point = hash_msg_to_g1(msg);
+//     Bls12_381::pairing(sig, <Bls12_381 as Pairing>::G2::generator()) == Bls12_381::pairing(point, pk)
 // }
+
 
 
 
 
 #[cfg(test_utils)]
 mod tests {
-    use ark_bls12_381::Bls12_381;
+    use ark_bls12_381::{G1Projective, Bls12_381};
     use ark_ec::{bls12::Bls12, pairing::Pairing, PrimeGroup};
     use ark_poly::{univariate::DensePolynomial, DenseUVPolynomial, Polynomial};
     use ark_std::{UniformRand, Zero};
@@ -175,7 +222,7 @@ mod tests {
     type G2 = <Bls12<ark_bls12_381::Config> as Pairing>::G2;
     type E = Bls12_381;
 
-    #[test_utils]
+    #[test]
     fn open_all_test() {
         let mut rng = ark_std::test_rng();
 

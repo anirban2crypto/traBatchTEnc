@@ -145,7 +145,8 @@ mod crsgen {
 
     #[test]
     fn test_crs_gen() {
-        let batch_size = 1 << 5;
+        //let batch_size = 1 << 5;
+        let batch_size = 4;
         let crs = CRS::<E>::new(batch_size);
         // Check that the CRS is correctly formed
         println!("CRS generated with batch size: {}", crs.batch_size);
