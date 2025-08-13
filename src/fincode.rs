@@ -2,8 +2,8 @@ use rand::Rng;
 use std::f64::consts::PI;
 
 /// Step 2: Generate bias values P = [p1, ..., p_ell]
-fn generate_p_array(c: usize, ell: usize, c2: f64) -> Vec<f64> {
-    let t = c2 / (c * c) as f64;
+fn generate_p_array(c: usize, ell: usize) -> Vec<f64> {
+    let t = 1 / (300*300*c * c) as f64;
     let sqrt_t = t.sqrt();
     let t_prime = sqrt_t.asin();
     let lower_bound = t_prime;
@@ -41,12 +41,12 @@ fn generate_f_array(ell: usize) -> Vec<u8> {
 
 
 /// Step 5: Generate X_bar matrix based on X, F and P
-fn generate_x_bar_matrix(x: &[Vec<u8>], f: &[u8], c: usize, c2: f64) -> Vec<Vec<u8>> {
+fn generate_x_bar_matrix(x: &[Vec<u8>], f: &[u8], c: usize) -> Vec<Vec<u8>> {
     let n = x.len();
     let ell = x[0].len();
 
-    let mut rng = rand::thread_rng();
-    let t = c2 / ((c * c) as f64);
+    let mut rng = rand::thread_rng();    
+    let t = 1 / (300*300*c * c) as f64;
     let sqrt_t = t.sqrt();
     let t_prime = sqrt_t.asin();
     let lower_bound = t_prime;
@@ -75,16 +75,19 @@ fn generate_x_bar_matrix(x: &[Vec<u8>], f: &[u8], c: usize, c2: f64) -> Vec<Vec<
 
     x_bar
 }
-fn code_generator(n: usize, c: usize, ell: usize, c2: f64) {
-    //let c = 4;
-    //let n = 10;
-    //let ell = 1000;
-    //let c2 = 1.0;
+fn code_generator(n: usize, c: usize, ell: usize) {
+    // n: number of users
+    // c: collusion size 
+    let log_c = (c as f64).ln(); 
+    let x = (log_c * log_c).floor() as usize;
+    let ell = 100 * c*c* x ;
+    //print code lengthe as the value of ell
+    println!("Code length (ell): {}", ell);
 
-    let p_array = generate_p_array(c, ell, c2);
+    let p_array = generate_p_array(c, ell);
     let x_matrix = generate_x_matrix(n, ell, &p_array);
     let f_array = generate_f_array(ell);
-    let x_bar_matrix =generate_x_bar_matrix(&x_matrix, &f_array, c, c2);
+    let x_bar_matrix =generate_x_bar_matrix(&x_matrix, &f_array, c);
     println!("First 10 values of P:");
     for i in 0..10 {
         println!("p[{}] = {:.6}", i + 1, p_array[i]);

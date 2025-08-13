@@ -32,8 +32,8 @@ fn main() {
     let n = 1 << 4;
     let t = n / 2 - 1;    
     // debug 
-    let code_at_pos: Vec<bool> = (0..n).map(|_| rng.gen_bool(0.5)).collect();
-    //let code_at_pos: Vec<bool> = vec![false; n];
+    let bip_flags_at_code_pos: Vec<bool> = (0..n).map(|_| rng.gen_bool(0.5)).collect();
+    //let bip_flags_at_code_pos: Vec<bool> = vec![false; n];
 
 
     println!("Batch size: {}, n:{}", batch_size, n);
@@ -47,7 +47,7 @@ fn main() {
     let h_j_bid = G1::rand(&mut rng);
     let mut secret_key: Vec<SecretKey<E>> = Vec::new();
     for i in 0..n {
-        if code_at_pos[i] {
+        if bip_flags_at_code_pos[i] {
             secret_key.push(SecretKey::new(key.sk_combined.sk_shares_y1[i]));
         } else {
             secret_key.push(SecretKey::new(key.sk_combined.sk_shares_z0[i]));
@@ -75,7 +75,7 @@ fn main() {
         //let partial_decryption = secret_key[i].partial_decrypt(&ct, h_j_bid, pk, &crs);
         let digest = com +h_j_bid;
         let wit_sig = secret_key[i].partial_decrypt(digest);
-        partial_decryptions.insert(i + 1, (wit_sig,code_at_pos[i]));
+        partial_decryptions.insert(i + 1, (wit_sig,bip_flags_at_code_pos[i]));
     }
 
     let dec_timer = start_timer!(|| "Decryption");

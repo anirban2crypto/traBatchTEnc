@@ -5,7 +5,15 @@ See the [paper](https://eprint.iacr.org/2024/1516) for a detailed comparison.
 
 Use ```cargo bench``` to benchmark `encrypt`, `partial_decrypt` and `decrypt_all`.
 
-Use ```cargo run --example endtoend``` to check correctness of the implementation.
+Use ```cargo run --example endtoend -- --nocapture``` to check correctness of the implementation.
+
+Use ```cargo test --features KeyTest -- --nocapture``` to check correctness of the keygen
+
+Use ```cargo test --features CRSTest -- --nocapture``` to check correctness of the crsgen
+
+Use ```cargo test --features EncTest -- --nocapture``` to check correctness of the enc
+
+
 
 **WARNING:** This is an academic proof-of-concept prototype, and in particular has not received careful code review. This implementation is NOT ready for production use.
 
