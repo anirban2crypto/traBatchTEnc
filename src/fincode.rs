@@ -193,10 +193,8 @@ fn accuse(
     scores: &[f64],
     c: usize,
     n: usize,
-    epsilon: f64,
-    c3: f64,
 ) -> Vec<usize> {
-    let threshold = c3 * (c as f64).ln() * (n as f64 / epsilon).ln();
+    let threshold = 20 * (c as f64).ln() * ((n as f64) * 100).ln();
     scores
         .iter()
         .enumerate()
@@ -206,8 +204,6 @@ fn accuse(
 }
 fn tracing_algorithm(
     delta: f64,                // fraction of '?' markings
-    epsilon: f64,              // error tolerance
-    c3: f64,                   // threshold constant
     c: usize,                  // parameter for code
     n: usize,                  // number of users
     w_star: Vec<char>,         // marked word
@@ -219,7 +215,6 @@ fn tracing_algorithm(
     let (mut w_clean, x_clean, p_clean, f_clean) = prune_components(&padded, &x_matrix, &p_array, &f_array);
     flip_marked_bits(&mut w_clean, &f_clean);
     let scores = compute_scores(&w_clean, &x_clean, &p_clean);
-    let accused_users = accuse(&scores, c, n, epsilon, c3);
-
+    let accused_users = accuse(&scores, c, n);
     println!("Accused users: {:?}", accused_users);
 }
