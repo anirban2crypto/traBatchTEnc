@@ -13,6 +13,12 @@ Use ```cargo test --features CRSTest -- --nocapture``` to check correctness of t
 
 Use ```cargo test --features EncTest -- --nocapture``` to check correctness of the enc
 
+Use ```cargo test --features CodeTest -- --nocapture``` to check correctness of the fingerprinting code
+
+Use ```cargo test --features DecoderTest -- --nocapture``` to check correctness of the decoder
+
+Use ```cargo test --features TraceTest -- --nocapture``` to check correctness of the Trace
+
 
 
 **WARNING:** This is an academic proof-of-concept prototype, and in particular has not received careful code review. This implementation is NOT ready for production use.

@@ -10,7 +10,7 @@ use rand::thread_rng;
 use std::{vec};
 use crate::utils::lagrange_interp_eval;
 use std::ops::MulAssign;
-use redb::{Database,ReadableTable, TableDefinition};
+use redb::{Database,ReadableTable, TableDefinition,Error};
 use std::result::Result;
 use std::io::Cursor; // Add this import for Cursor
 
@@ -224,6 +224,25 @@ pub fn fetch_one_key<E: Pairing>(db: &Database, pos: usize) -> OneKey<E> {
     }
 }
 
+pub fn fetch_batch_of_keys<E: Pairing>(
+    db: &Database,
+    start_pos: usize,
+    batch_size: usize,
+) -> Result<Vec<OneKey<E>>, Error> {
+    
+    let mut key_list: Vec<OneKey<E>> = Vec::with_capacity(batch_size);
+    let read_txn = db.begin_read()?;
+    let table = read_txn.open_table(KEY_TABLE_DEF)?;
+    //println!("Fetching keys from position {} with batch size {}", start_pos, batch_size);
+    for pos in start_pos..(start_pos + batch_size) {
+        let serialized_bytes = table.get(pos.to_string().as_str())?.unwrap().value();        
+        let cursor = Cursor::new(serialized_bytes);
+        let key = OneKey::<E>::deserialize_compressed(cursor).expect("Failed to deserialize key");
+        key_list.push(key);
+    }
+    
+    Ok(key_list)
+}
 
 #[cfg(feature = "KeyTest")]
 mod keygen {
@@ -244,6 +263,20 @@ mod keygen {
         // Generate keys and insert into DB
         gen_batch_keys::<E>(&db, n, t, 0, key_batch_size)
             .expect("Failed to generate batch keys");
+
+        let start_pos = 0;
+        let batch_size = key_batch_size;    
+        println!("Fetching keys from position {} with batch size {}", start_pos, batch_size);
+        let key_list = fetch_batch_of_keys::<E>(&db,start_pos,batch_size).expect("Failed to fetch batch of keys");
+        assert_eq!(key_list.len(), batch_size, "Fetched keys count does not match batch size");
+        for key in key_list.iter() {
+            assert_eq!(key.n, n, "Key n does not match");
+            assert_eq!(key.t, t, "Key t does not match");
+            assert!(!key.sk_combined.sk_shares_z0.is_empty(), "sk_shares_z0 should not be empty");
+            assert!(!key.pk_combined.X.is_zero(), "PK X should not be zero");
+            assert!(!key.pk_combined.Y.is_zero(), "PK Y should not be zero");
+            assert!(!key.pk_combined.Z.is_zero(), "PK Z should not be zero");
+        }
 
         // Fetch and verify the first key
         let key = fetch_one_key::<E>(&db, 0);

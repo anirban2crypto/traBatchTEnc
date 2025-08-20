@@ -43,6 +43,9 @@ asm = ["ark-ff/asm"]
 CRSTest = []
 KeyTest=[]
 EncTest=[]
+CodeTest=[]
+DecoderTest=[]
+TraceTest=[]
 
 
 

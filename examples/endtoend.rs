@@ -23,6 +23,7 @@ const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_
 type E = Bls12_381;
 type Fr = <E as Pairing>::ScalarField;
 type G1 = <E as Pairing>::G1;
+type G2 = <E as Pairing>::G2;
 
 fn main() {
     let mut rng = ark_std::test_rng();
@@ -34,6 +35,7 @@ fn main() {
     // debug 
     let bip_flags_at_code_pos: Vec<bool> = (0..n).map(|_| rng.gen_bool(0.5)).collect();
     //let bip_flags_at_code_pos: Vec<bool> = vec![false; n];
+    //let bip_flags_at_code_pos: Vec<bool> = vec![true; n];
 
 
     println!("Batch size: {}, n:{}", batch_size, n);
@@ -56,13 +58,17 @@ fn main() {
     }
 
     let tx_domain = Radix2EvaluationDomain::<Fr>::new(batch_size).unwrap();
-    let msg = [1u8; 32];
+    let msg = [2u8; 32];
 
 
     // generate ciphertexts for all points in tx_domain
     let mut ct: Vec<Ciphertext<E>> = Vec::new();
     for x in tx_domain.elements() {
         let (cxt,sig) = encrypt::<E>(msg, x, h_j_bid, crs.htau, key.pk_combined.clone(), &mut rng);
+        //// invalid right ciphertexts
+        //    let mut cxt_r_invalid =cxt.clone();
+        //    cxt_r_invalid.ct4 = G2::rand(&mut rng); // make ct4 invalid
+        //    ct.push(cxt_r_invalid);
         ct.push(cxt);
     }
 
