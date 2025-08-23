@@ -8,7 +8,7 @@ use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
 use ark_std::{end_timer, start_timer, UniformRand,Zero};
 use ark_ff::Field;
 use traceable_batch_threshold::{
-    keygen::{OneKey,fetch_one_key,PkCombined,gen_batch_keys, fetch_batch_of_keys},
+    keygen::{SkCombined,PkCombined,OneKey,fetch_one_key,gen_batch_keys, fetch_batch_of_keys},
     crsgen::{CRS,read_crs,insert_crs},
     decryption::{aggregate_partial_decryptions, decrypt_all,get_digest, SecretKey},
     encryption::{encrypt, Ciphertext},
@@ -19,6 +19,7 @@ use traceable_batch_threshold::{
 use redb::{Database,ReadableTable, TableDefinition};
 use std::result::Result;
 use ark_std::rand::Rng;
+use ark_serialize::CanonicalSerialize;
 
 const DB_PATH: &str = "ttbe_database_ete.redb";
 const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
@@ -31,9 +32,21 @@ type G1 = <E as Pairing>::G1;
 type G2 = <E as Pairing>::G2;
 
 fn main() {
+    let args: Vec<String> = std::env::args().collect();
     let mut rng = ark_std::test_rng();
-    let mut batch_size = 4;
-    let mut n = 1 << 4;       // number of users
+    //let mut batch_size = 8;   // batch size for encryption
+    //let mut n = 1 << 4;       // number of users
+    let batch_size: usize = if args.len() > 2 {
+        args[2].parse().expect("Please provide a valid number for batch size")
+    } else {
+        4
+    };
+    let n: usize = if args.len() > 3 {
+        args[3].parse().expect("Please provide a valid number for n")
+    } else {
+        8
+    };
+    println!("Batch size: {}, Number of users: {}", batch_size, n);
     let mut t = n / 2 - 1;    // threshold <=t secret sharing can not decrypt
     let coalition_size= n / 2;          
     let start_pos = 0;
@@ -81,6 +94,27 @@ fn main() {
     }
     let key = fetch_one_key::<E>(&db, code_pos);
     let crs = read_crs::<E>(&db, &batch_size.to_string());
+    
+    let mut com_sk_bytes = Vec::new();
+    let sk_key :SkCombined<E>;
+    sk_key=key.sk_combined.clone(); 
+    sk_key.serialize_compressed(&mut com_sk_bytes).unwrap();
+    let sk_size=com_sk_bytes.len();
+    
+
+    let mut com_crs_bytes = Vec::new();
+    let crs_value :CRS<E>;
+    crs_value=crs.clone(); 
+    crs_value.serialize_compressed(&mut com_crs_bytes).unwrap();
+    let crs_size=com_crs_bytes.len();
+    
+    let mut com_pk_bytes = Vec::new();
+    let pk_key :PkCombined<E>;
+    pk_key=key.pk_combined.clone(); 
+    pk_key.serialize_compressed(&mut com_pk_bytes).unwrap();
+    let pk_size=com_pk_bytes.len() ;
+    
+
     let h_j_bid = G1::rand(&mut rng);
     let mut secret_key: Vec<SecretKey<E>> = Vec::new();
     for i in 0..coalition_size {
@@ -102,8 +136,14 @@ fn main() {
     for x in tx_domain.elements() {
         let (cxt,sig) = encrypt::<E>(msg, x, h_j_bid, crs.htau, key.pk_combined.clone(), &mut rng);
         ct.push(cxt);
-    }
+    }    
     end_timer!(ec_timer); 
+
+    let mut com_ct_bytes = Vec::new();
+    let ct_value=ct[0].clone(); 
+    ct_value.serialize_compressed(&mut com_ct_bytes).unwrap();
+    let ct_size=com_ct_bytes.len();
+    //println!("Ciphertext size: {} bytes", ct_size);
     //----------------------------------------------------------------------------------------------
     //                   Partial Decryption
     //----------------------------------------------------------------------------------------------
@@ -116,12 +156,29 @@ fn main() {
         pd_list.insert(corrupt_indices[i] + 1, (pd, bip_flags_at_code_pos[i]));
     }
     end_timer!(pd_timer); 
+    let mut total_pd_size=0;
+    if let Some((key, (g1, flag))) = pd_list.iter_mut().next() {
+        let mut com_pd_bytes = Vec::new();
+        key.serialize_compressed(&mut com_pd_bytes).unwrap();
+        let pd_key_size=com_pd_bytes.len();
+        g1.serialize_compressed(&mut com_pd_bytes).unwrap();
+        let pd_g1_size=com_pd_bytes.len() - pd_key_size;
+        let pd_flag_size=std::mem::size_of_val(flag);
+        total_pd_size=pd_key_size + pd_g1_size + pd_flag_size;        
+    }
     //----------------------------------------------------------------------------------------------
     //                    Combine
     //----------------------------------------------------------------------------------------------    
     let com_timer = start_timer!(|| "Combine");
     let (sigma_left,sigma_right) = aggregate_partial_decryptions(&pd_list); 
     end_timer!(com_timer); 
+    let mut compress_sigma_bytes = Vec::new();
+    sigma_left.serialize_compressed(&mut compress_sigma_bytes).unwrap();
+    let sigma_left_size=compress_sigma_bytes.len(); 
+    sigma_right.serialize_compressed(&mut compress_sigma_bytes).unwrap();
+    let sigma_right_size=compress_sigma_bytes.len() - sigma_left_size;
+    let sigma_size=sigma_left_size + sigma_right_size;
+
     //----------------------------------------------------------------------------------------------
     //                    Decryption
     //----------------------------------------------------------------------------------------------
@@ -136,4 +193,28 @@ fn main() {
     //----------------------------------------------------------------------------------------------
     drop(db);
     fs::remove_file(DB_PATH).expect("Failed to delete database file");
+    let mut total_sk_size=sk_size * total_keys;
+    if sk_size * total_keys < 1024 {
+        println!("Secret key size: {} bytes", total_sk_size);
+    } else if sk_size * total_keys < 1048576 {
+        total_sk_size=total_sk_size/1024;
+        println!("Secret key size: {} KB", total_sk_size);
+    } else {
+        total_sk_size=total_sk_size/1048576;
+        println!("Secret key size: {} MB", total_sk_size);
+    }    
+    let mut total_pk_size=pk_size * total_keys + crs_size;
+    if total_pk_size < 1024 {
+        println!("Public key size: {} bytes", total_pk_size);
+    } else if total_pk_size < 1048576 {
+        total_pk_size=total_pk_size/1024;
+        println!("Public key size: {} KB", total_pk_size);
+    } else {
+        total_pk_size=total_pk_size/1048576;
+        println!("Public key size: {} MB", total_pk_size);
+    }
+    println!("Ciphertext size: {} bytes", ct_size);
+    println!("Partial Decryption size: {} bytes", total_pd_size);
+    println!("Sigma size: {} bytes", sigma_size);
+
 }
