@@ -86,7 +86,7 @@ pub fn code_generator(n: usize, c: usize)
     // calulate code length ell
     let ell = 5 * c*c* x ;
     //print code lengthe as the value of ell
-    println!("Code length (ell)= 5 * c *c *log_c*log_c: {}", ell);
+    //println!("Code length (ell)= 5 * c *c *log_c*log_c: {}", ell);
 
     let p_array = generate_p_array(c, ell);
     let x_matrix = generate_x_matrix(n, ell, &p_array);
