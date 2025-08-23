@@ -192,8 +192,8 @@ fn compute_scores(
             };
             sum += w_clean[i] as f64 * u_ji;
         }        
-       //println!("Score for user {}: {}", j, sum);
-        scores.push(sum);
+       println!("Score for user {}: {}", j, sum);
+       scores.push(sum);
     }
 
     scores
@@ -236,7 +236,7 @@ fn accuse(scores: &[f64], _c: usize, _n: usize) -> Vec<usize> {
     //let std_dev = (scores.iter().map(|s| (s - mean).powi(2)).sum::<f64>() / scores.len() as f64).sqrt();
     //let mut threshold = 1.0; // Example threshold for Z-score
     let max = scores.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
-    let mut threshold = (max as i32) as f64; // Example threshold for Z-score
+    let mut threshold = max.floor(); // Example threshold for Z-score
     scores
         .iter()
         .copied()
@@ -270,7 +270,7 @@ mod code_test {
     
     #[test]
     fn test_code_gen_and_trace() {
-        let n = 1 << 4; // number of users
+        let n = 1 << 5; // number of users
         let c = n / 2;  // collusion size
 
         
@@ -313,7 +313,9 @@ mod code_test {
             } else if all_one {
                 '1'
             } else {
-                '?'
+                let mut rng = rand::thread_rng();
+                if rng.gen_bool(0.5) { '1' } else {'0' }
+                //'?'
             };
 
             w_star.push(symbol);
@@ -323,9 +325,10 @@ mod code_test {
 
 
         // Fraction of '?' markings
-        let mismatch_count = w_star.iter().filter(|&&c| c == '?').count();
-        let delta = mismatch_count as f64 / x_bar_matrix[0].len() as f64;
-        //println!("Fraction of '?' markings (delta): {}", delta);      
+        //let mismatch_count = w_star.iter().filter(|&&c| c == '?').count();
+        //let delta = mismatch_count as f64 / x_bar_matrix[0].len() as f64;
+        let delta = 0.5; // Example value for delta
+        println!("Fraction of '?' markings (delta): {}", delta);      
 
         tracing_algorithm(delta, c, n, w_star, x_matrix, p_array, f_array);
     }

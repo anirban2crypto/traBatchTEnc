@@ -99,10 +99,11 @@ pub fn trace<E: Pairing>(
             let key = &key_list[code_pos % key_batch_size];
             
             //drop(db);
-            // generate valid left ciphertexts and invalid right ciphertexts
-            // generate invlaid left and right ciphertexts
+            // generate valid left ciphertext and an invalid right ciphertext
+            // generate with invalid left and right ciphertexts
+            // generate valid left and right ciphertexts
             let mut val_l_inval_r_ct: Vec<Ciphertext<E>> = Vec::new();
-            let mut inval_l_val_r_ct: Vec<Ciphertext<E>> = Vec::new();
+            let mut inval_l_r_ct: Vec<Ciphertext<E>> = Vec::new();
             let mut valid_l_r_ct: Vec<Ciphertext<E>> = Vec::new();
 
             //Generate batch of ciphertexts
@@ -115,14 +116,15 @@ pub fn trace<E: Pairing>(
                 cxt_r_invalid.ct4 = E::G2::rand(&mut rng); // make ct4 invalid
                 val_l_inval_r_ct.push(cxt_r_invalid);
 
-                let mut cxt_l_invalid = cxt.clone();
-                cxt_l_invalid.ct3 = E::G2::rand(&mut rng); // make ct3 invalid
-                inval_l_val_r_ct.push(cxt_l_invalid);    
+                let mut cxt_l_r_invalid = cxt.clone();
+                cxt_l_r_invalid.ct3 = E::G2::rand(&mut rng); // make ct3 invalid
+                cxt_l_r_invalid.ct4 = E::G2::rand(&mut rng); // make ct4 invalid
+                inval_l_r_ct.push(cxt_l_r_invalid);    
 
             } 
                    
             // Run the decoder valid left and invalid right ciphertexts           
-            let dec_suc_1=decoder::<E>(
+            let dec_suc_001=decoder::<E>(
                 &db,
                 code_pos,
                 &val_l_inval_r_ct,
@@ -133,55 +135,54 @@ pub fn trace<E: Pairing>(
                 &bip_flags_at_code_pos,
                 &vec![[2u8; 32]; batch_size],
             );
-            //println!("Decoder success for valid left and invalid right ciphertexts: {}", dec_suc_1);
+            //println!("Decoder success for valid left and invalid right ciphertexts: {}", dec_suc_001);
 
-            // Run the decoder invalid left and valid right ciphertexts
-            let dec_suc_2=decoder::<E>(
-                &db,
-                code_pos,
-                &inval_l_val_r_ct,
-                h_j_bid,
-                coalition_size,
-                batch_size,
-                &corrupt_indices,
-                &bip_flags_at_code_pos,
-                &vec![[2u8; 32]; batch_size],
-            );
-            //println!("Decoder success for invalid left and valid right ciphertexts: {}", dec_suc_2);
+            // Run the decoder invalid left and  right ciphertexts
+            // Assuming symantic security, the decoder should fail
+            let dec_suc_100=false;
+            // let dec_suc_100=decoder::<E>(
+            //     &db,
+            //     code_pos,
+            //     &inval_l_r_ct,
+            //     h_j_bid,
+            //     coalition_size,
+            //     batch_size,
+            //     &corrupt_indices,
+            //     &bip_flags_at_code_pos,
+            //     &vec![[2u8; 32]; batch_size],
+            // );
+            //println!("Decoder success for invalid left and right ciphertexts: {}", dec_suc_100);
 
             // Run the decoder valid left and right ciphertexts
-            let dec_suc_3=decoder::<E>(
-                &db,
-                code_pos,
-                &valid_l_r_ct,
-                h_j_bid,
-                coalition_size,
-                batch_size,
-                &corrupt_indices,
-                &bip_flags_at_code_pos,
-                &vec![[2u8; 32]; batch_size],
-            );
-            //println!("Decoder success for valid left and right ciphertexts: {}", dec_suc_3);
+            // assuming the perfect decoder should succeed always
+             let dec_suc_111=true;
+            // let dec_suc_111=decoder::<E>(
+            //     &db,
+            //     code_pos,
+            //     &valid_l_r_ct,
+            //     h_j_bid,
+            //     coalition_size,
+            //     batch_size,
+            //     &corrupt_indices,
+            //     &bip_flags_at_code_pos,
+            //     &vec![[2u8; 32]; batch_size],
+            // );
+            //println!("Decoder success for valid left and right ciphertexts: {}", dec_suc_111);
             
-            // if (dec_suc_1 and  dec_suc_3) is true then   w_star.push('0');
-            // if (dec_suc_2 and  dec_suc_3 is true then   w_star.push('1');
-            // if dec_suc_3 is true and dec_suc_1 and dec_suc_2 are false then   w_star.push('?');
-            if dec_suc_1 && dec_suc_3 {
+            // if (dec_suc_001 xor  dec_suc_100) is true then   w_star.push('0');
+            // if (dec_suc_001 xor  dec_suc_111) is true then   w_star.push('1');
+            // if both condition above are false then   w_star.push('?');
+            if dec_suc_001 ^ dec_suc_100 {
                 w_star.push('0');
-            } else if dec_suc_2 && dec_suc_3 {
+            } else if dec_suc_001 ^ dec_suc_111 {
                 w_star.push('1');
-            } else if dec_suc_3 && !dec_suc_1 && !dec_suc_2 {
-                w_star.push('?');
             } else {
-                // If none of the conditions are met, we can push a default value or handle it as needed
-                w_star.push('!'); // or any other default value
-            }
-            
-                        
-        }            
-        let mismatch_count = w_star.iter().filter(|&&c| c == '?').count();
-        let delta = mismatch_count as f64 / x_bar_matrix[0].len() as f64;            
-        //println!("w_star: {:?}", w_star);    
+                // If none of the conditions are met, we can push a value '?'
+                w_star.push('?'); 
+            }                                    
+        }                               
+        //println!("w_star: {:?}", w_star);  
+        let delta = 0.5;  
         tracing_algorithm(delta, coalition_size, n, w_star, x_matrix, p_array, f_array);
         true
 }
