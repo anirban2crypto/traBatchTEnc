@@ -1,0 +1,98 @@
+For Table 3, batch size B = 128
+Batch size: 128, Number of users: 8
+Start:   Key Generation
+··End:     Key Generation ..........................................................170.952ms
+Start:   Encryption
+··End:     Encryption ..............................................................1.069s
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................4.301ms
+Start:   Combine
+··End:     Combine .................................................................129.220µs
+Start:   Decryption
+··End:     Decryption ..............................................................388.988ms
+Secret key size: 48 KB
+Public key size: 40 KB
+Ciphertext size: 544 bytes
+Partial Decryption size: 57 bytes
+Sigma size: 96 bytes
+Batch size: 128, Number of users: 16
+Start:   Key Generation
+··End:     Key Generation ..........................................................2.638s
+Start:   Encryption
+··End:     Encryption ..............................................................1.070s
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................4.657ms
+Start:   Combine
+··End:     Combine .................................................................270.353µs
+Start:   Decryption
+··End:     Decryption ..............................................................389.307ms
+Secret key size: 1 MB
+Public key size: 378 KB
+Ciphertext size: 544 bytes
+Partial Decryption size: 57 bytes
+Sigma size: 96 bytes
+Batch size: 128, Number of users: 32
+Start:   Key Generation
+··End:     Key Generation ..........................................................26.516s
+Start:   Encryption
+··End:     Encryption ..............................................................1.070s
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................5.213ms
+Start:   Combine
+··End:     Combine .................................................................555.051µs
+Start:   Decryption
+··End:     Decryption ..............................................................389.549ms
+Secret key size: 18 MB
+Public key size: 2 MB
+Ciphertext size: 544 bytes
+Partial Decryption size: 57 bytes
+Sigma size: 96 bytes
+For Table 4, number of parties n = 16
+Batch size: 8, Number of users: 16
+Start:   Key Generation
+··End:     Key Generation ..........................................................2.654s
+Start:   Encryption
+··End:     Encryption ..............................................................66.071ms
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................1.148ms
+Start:   Combine
+··End:     Combine .................................................................266.025µs
+Start:   Decryption
+··End:     Decryption ..............................................................20.970ms
+Secret key size: 1 MB
+Public key size: 361 KB
+Ciphertext size: 544 bytes
+Partial Decryption size: 57 bytes
+Sigma size: 96 bytes
+Batch size: 16, Number of users: 16
+Start:   Key Generation
+··End:     Key Generation ..........................................................2.647s
+Start:   Encryption
+··End:     Encryption ..............................................................133.954ms
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................1.478ms
+Start:   Combine
+··End:     Combine .................................................................261.434µs
+Start:   Decryption
+··End:     Decryption ..............................................................46.918ms
+Secret key size: 1 MB
+Public key size: 362 KB
+Ciphertext size: 544 bytes
+Partial Decryption size: 57 bytes
+Sigma size: 96 bytes
+Batch size: 32, Number of users: 16
+Start:   Key Generation
+··End:     Key Generation ..........................................................2.650s
+Start:   Encryption
+··End:     Encryption ..............................................................267.739ms
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................2.018ms
+Start:   Combine
+··End:     Combine .................................................................261.229µs
+Start:   Decryption
+··End:     Decryption ..............................................................90.284ms
+Secret key size: 1 MB
+Public key size: 364 KB
+Ciphertext size: 544 bytes
+Partial Decryption size: 57 bytes
+Sigma size: 96 bytes
