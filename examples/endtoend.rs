@@ -57,8 +57,6 @@ fn main() {
     } else {
         n / 2   // coalition size   
     };
-    println!("Batch size: {}, Number of users: {},code_constant: {} ,coalition size: {}", batch_size, n,code_constant,coalition_size);
-    
               
     let mut t = coalition_size - 1;    // threshold <=t secret sharing can not decrypt
     let start_pos = 0;
@@ -72,6 +70,8 @@ fn main() {
     let kg_timer = start_timer!(|| "Key Generation");
     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
     let total_keys = x_bar_matrix[0].len();  //code length
+    println!("Batch size: {}, Number of users: {},code_constant: {} ,coalition size: {}, total keys: {}",
+     batch_size, n,code_constant,coalition_size,total_keys);
     let crs = CRS::<E>::new(batch_size);
     let mut db: Database;
     if !Path::new(DB_PATH).exists(){

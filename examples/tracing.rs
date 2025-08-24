@@ -35,24 +35,30 @@ type G2 = <E as Pairing>::G2;
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let mut rng = rand::thread_rng();
-    let b_power = rng.gen_range(1..=3);
-    let batch_size = 1 << b_power; // Bit shift is equivalent to 2^b_power
-
-    let n: usize = if args.len() > 2 {
-        args[2].parse().expect("Please provide a valid number for n")
+    
+    //let b_power = rng.gen_range(1..=4);
+    //let batch_size = 1 << b_power; // Bit shift is equivalent to 2^b_power
+    let batch_size: usize = if args.len() > 2 {
+        args[2].parse().expect("Please provide a valid number for batch size")
+    } else {
+        4
+    };
+    let n: usize = if args.len() > 3 {
+        args[3].parse().expect("Please provide a valid number for n")
     } else {
         8
     };
-    let code_constant: usize = if args.len() > 3 {
-        args[3].parse().expect("Please provide a valid number for code_constant")
+    let code_constant: usize = if args.len() > 4 {
+        args[4].parse().expect("Please provide a valid number for code_constant")
     } else {
         10   // coalition size   
     };    
-    let coalition_size: usize = if args.len() > 4 {
-        args[4].parse().expect("Please provide a valid number for coalition_size")
+    let coalition_size: usize = if args.len() > 5 {
+        args[5].parse().expect("Please provide a valid number for coalition_size")
     } else {
         n / 2   // coalition size   
-    };    
+    }; 
+    
     if coalition_size >= n {
         panic!("Coalition size must be less than the number of users (n).");
     }    
@@ -60,8 +66,6 @@ fn main() {
     let start_pos = 0;
     let mut key_batch_size = 500;  // generate keys in batches    
     let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
-    println!("Batch size: {}, Number of users: {}, coalition size: {},code_constant: {}",
-     batch_size, n,coalition_size,code_constant);
     //----------------------------------------------------------------------------------------------
     //                   Key Generation
     //----------------------------------------------------------------------------------------------   
@@ -69,6 +73,8 @@ fn main() {
     let log_c = (coalition_size as f64).ln(); 
     let x = (log_c * log_c).floor() as usize;        
     let total_keys = code_constant * coalition_size*coalition_size* x ; // code length   
+    println!("Batch size: {}, Number of users: {}, coalition size: {},code_constant: {}, total_keys {}",
+     batch_size, n,coalition_size,code_constant,total_keys);
     let crs = CRS::<E>::new(batch_size);
     let mut db: Database;
     if !Path::new(DB_PATH).exists(){
