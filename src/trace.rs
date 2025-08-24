@@ -235,9 +235,9 @@ pub fn trace<E: Pairing>(
                 w_star.push('?'); 
             }                                    
         }                               
-        println!("w_star: {:?}", w_star);  
+        //println!("w_star: {:?}", w_star);  
         let delta = w_star.iter().filter(|&&x| x == '?').count() as f64 / code_len as f64; 
-        println!("Delta: {}", delta);
+        //println!("Delta: {}", delta);
         let accused_users=tracing_algorithm(delta, coalition_size, n, w_star, x_matrix, p_array, f_array);
         accused_users
         //vec![]

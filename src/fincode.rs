@@ -192,7 +192,7 @@ fn compute_scores(
             };
             sum += w_clean[i] as f64 * u_ji;
         }        
-       println!("Score for user {}: {}", j, sum);
+       //println!("Score for user {}: {}", j, sum);
        scores.push(sum);
     }
 

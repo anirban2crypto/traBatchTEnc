@@ -4,7 +4,7 @@ logfile=logfile_$today.txt
 echo "Log file: $logfile"
 
 echo "For Table 3,5 batch size B = 128"  > $logfile
-cargo run --example endtoend -- --nocapture 128 8  >> $logfile
+cargo run --example endtoend -- --nocapture 128 8 30 >> $logfile
 cargo run --example endtoend -- --nocapture 128 16 >> $logfile
 cargo run --example endtoend -- --nocapture 128 32 >> $logfile
 cargo run --example endtoend -- --nocapture 128 64 >> $logfile

@@ -47,19 +47,24 @@ fn main() {
     } else {
         8
     };
-    let coalition_size: usize = if args.len() > 4 {
-        args[4].parse().expect("Please provide a valid number for coalition_size")
+    let mut code_constant: usize = if args.len() > 4 {
+        args[4].parse().expect("Please provide a valid number for code_constant")
+    } else {
+        5   // coalition size   
+    };
+    let mut coalition_size: usize = if args.len() > 5 {
+        args[5].parse().expect("Please provide a valid number for coalition_size")
     } else {
         n / 2   // coalition size   
     };
-    println!("Batch size: {}, Number of users: {}, coalition size: {}", batch_size, n,coalition_size);
+    println!("Batch size: {}, Number of users: {},code_constant: {} ,coalition size: {}", batch_size, n,code_constant,coalition_size);
     
-    let coalition_size= n / 2;          
-    let mut t = n / 2 - 1;    // threshold <=t secret sharing can not decrypt
+              
+    let mut t = coalition_size - 1;    // threshold <=t secret sharing can not decrypt
     let start_pos = 0;
     let mut key_batch_size = 500;  // generate keys in batches    
     let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
-    let mut code_constant=5; // code constant
+    
 
     //----------------------------------------------------------------------------------------------
     //                   Key Generation
