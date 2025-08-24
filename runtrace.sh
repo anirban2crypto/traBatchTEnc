@@ -7,9 +7,10 @@ echo "Log file: $logfile"
 
 echo "For Table 4, number of parties n = 16" >> $logfile
 
-cargo run --example tracing  -- --nocapture 4 15 >> $logfile
-cargo run --example tracing  -- --nocapture 4 20 >> $logfile
-cargo run --example tracing  -- --nocapture 4 25 >> $logfile
+cargo run --example tracing  -- --nocapture 8 30  >> $logfile
+cargo run --example tracing  -- --nocapture 12 10 >> $logfile
+cargo run --example tracing  -- --nocapture 16 5  >> $logfile
+cargo run --example tracing  -- --nocapture 20 5  >> $logfile
 
 
 

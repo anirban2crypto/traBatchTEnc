@@ -35,20 +35,16 @@ type G2 = <E as Pairing>::G2;
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let mut rng = rand::thread_rng();
-    //let mut batch_size = 8;   // batch size for encryption
-    //let mut n = 1 << 4;       // number of users
-    let batch_size: usize = if args.len() > 2 {
-        args[2].parse().expect("Please provide a valid number for batch size")
-    } else {
-        4
-    };
-    let n: usize = if args.len() > 3 {
-        args[3].parse().expect("Please provide a valid number for n")
+    let b_power = rng.gen_range(1..=4);
+    let batch_size = 1 << b_power; // Bit shift is equivalent to 2^b_power
+
+    let n: usize = if args.len() > 2 {
+        args[2].parse().expect("Please provide a valid number for n")
     } else {
         8
     };
-    let code_constant: usize = if args.len() > 4 {
-        args[4].parse().expect("Please provide a valid number for coalition_size")
+    let code_constant: usize = if args.len() > 3 {
+        args[3].parse().expect("Please provide a valid number for code_constant")
     } else {
         5   // coalition size   
     };    
