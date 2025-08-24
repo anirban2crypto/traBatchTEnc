@@ -35,7 +35,7 @@ type G2 = <E as Pairing>::G2;
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let mut rng = rand::thread_rng();
-    let b_power = rng.gen_range(1..=4);
+    let b_power = rng.gen_range(1..=3);
     let batch_size = 1 << b_power; // Bit shift is equivalent to 2^b_power
 
     let n: usize = if args.len() > 2 {
@@ -46,9 +46,16 @@ fn main() {
     let code_constant: usize = if args.len() > 3 {
         args[3].parse().expect("Please provide a valid number for code_constant")
     } else {
-        5   // coalition size   
+        10   // coalition size   
     };    
-    let coalition_size= n / 2;          
+    let coalition_size: usize = if args.len() > 4 {
+        args[4].parse().expect("Please provide a valid number for coalition_size")
+    } else {
+        n / 2   // coalition size   
+    };    
+    if coalition_size >= n {
+        panic!("Coalition size must be less than the number of users (n).");
+    }    
     let mut t = coalition_size - 1;    //  Less than coalition size can not decrypt
     let start_pos = 0;
     let mut key_batch_size = 500;  // generate keys in batches    

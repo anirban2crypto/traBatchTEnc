@@ -50,7 +50,7 @@ fn main() {
     let mut code_constant: usize = if args.len() > 4 {
         args[4].parse().expect("Please provide a valid number for code_constant")
     } else {
-        5   // coalition size   
+        10   // coalition size   
     };
     let mut coalition_size: usize = if args.len() > 5 {
         args[5].parse().expect("Please provide a valid number for coalition_size")
