@@ -35,7 +35,7 @@ pub fn trace<E: Pairing>(
     batch_size: usize,
     coalition_size: usize,
     total_keys: usize,
-)-> bool{
+)-> Vec<usize>{
         let mut rng = thread_rng();        
         let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
         println!("Corrupt indices: {:?}", corrupt_indices);
@@ -44,7 +44,8 @@ pub fn trace<E: Pairing>(
         let msg = [2u8; 32];
         let crs = read_crs::<E>(&db, &batch_size.to_string());        
         let mut key_batch_size = 500; // read keys in batches
-        //start Debug trace with hard coded values        
+        //start Debug trace with hard coded values   
+        //coalition_size = 3     
         // corrupt_indices = vec![1, 2, 3];
         // println!("Corrupt indices: {:?}", corrupt_indices);
         // let x_bar_matrix: Vec<Vec<u8>> = vec![
@@ -67,7 +68,7 @@ pub fn trace<E: Pairing>(
         //check code_len is equal to total_keys, if not print code_len and total_keys
         if code_len != total_keys {
             println!("Code length: {}, Total keys: {}", code_len, total_keys);
-            return false;
+            return vec![];
         }                        
         let mut w_star = Vec::with_capacity(code_len);
 
@@ -78,7 +79,7 @@ pub fn trace<E: Pairing>(
         let mut key_list: Vec<OneKey<E>>=Vec::new();
         for code_pos in 0..code_len {
             if code_pos % key_batch_size == 0 {                 
-                println!("Processing code position: {}", code_pos);
+                //println!("Processing code position: {}", code_pos);
                 let mut fetch_batch_size = key_batch_size;
                 if code_pos + key_batch_size > code_len {
                     fetch_batch_size = code_len - code_pos;
@@ -183,8 +184,8 @@ pub fn trace<E: Pairing>(
         }                               
         //println!("w_star: {:?}", w_star);  
         let delta = 0.5;  
-        tracing_algorithm(delta, coalition_size, n, w_star, x_matrix, p_array, f_array);
-        true
+        let accused_users=tracing_algorithm(delta, coalition_size, n, w_star, x_matrix, p_array, f_array);
+        accused_users
 }
 
 #[cfg(feature = "TraceTest")]

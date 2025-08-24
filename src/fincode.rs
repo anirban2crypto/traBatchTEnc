@@ -255,13 +255,14 @@ pub fn tracing_algorithm(
     x_matrix: Vec<Vec<u8>>,    // previously generated X matrix
     p_array: Vec<f64>,         // previously computed P
     f_array: Vec<u8>,          // previously generated F
-) {
+) -> Vec<usize>{
     let padded = pad_w_star(w_star, delta);
     let (mut w_clean, x_clean, p_clean, f_clean) = prune_components(&padded, &x_matrix, &p_array, &f_array);
     flip_marked_bits(&mut w_clean, &f_clean);
     let scores = compute_scores(&w_clean, &x_clean, &p_clean);
     let accused_users = accuse(&scores, c, n);
-    println!("Accused users: {:?}", accused_users);
+    //println!("Accused users: {:?}", accused_users);
+    accused_users
 }
 
 #[cfg(feature = "CodeTest")]
