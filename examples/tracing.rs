@@ -46,26 +46,24 @@ fn main() {
     } else {
         8
     };
-    let coalition_size: usize = if args.len() > 4 {
+    let code_constant: usize = if args.len() > 4 {
         args[4].parse().expect("Please provide a valid number for coalition_size")
     } else {
-        n / 2   // coalition size   
-    };
-    println!("Batch size: {}, Number of users: {}, coalition size: {}", batch_size, n,coalition_size);
-    
-    //let coalition_size= n / 2;          
+        5   // coalition size   
+    };    
+    let coalition_size= n / 2;          
     let mut t = coalition_size - 1;    //  Less than coalition size can not decrypt
     let start_pos = 0;
     let mut key_batch_size = 500;  // generate keys in batches    
     let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
-
+    println!("Batch size: {}, Number of users: {}, coalition size: {}", batch_size, n,coalition_size);
     //----------------------------------------------------------------------------------------------
     //                   Key Generation
     //----------------------------------------------------------------------------------------------   
     //let kg_timer = start_timer!(|| "Key Generation");
     let log_c = (coalition_size as f64).ln(); 
     let x = (log_c * log_c).floor() as usize;        
-    let total_keys = 5 * coalition_size*coalition_size* x ; // code length   
+    let total_keys = code_constant * coalition_size*coalition_size* x ; // code length   
     let crs = CRS::<E>::new(batch_size);
     let mut db: Database;
     if !Path::new(DB_PATH).exists(){
@@ -94,7 +92,7 @@ fn main() {
     //                   Run the trace
     //----------------------------------------------------------------------------------------------
     let trace_timer = start_timer!(|| "Tracing");
-    let trace_result = trace::<E>(&db, n, t, batch_size,coalition_size,total_keys);
+    let trace_result = trace::<E>(&db, n, t, batch_size,coalition_size,total_keys,code_constant);
     end_timer!(trace_timer);
     // if there exist a users in trace_result 
     // who is not in corrupt_indices  print trace unsuccessful

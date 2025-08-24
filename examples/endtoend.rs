@@ -58,12 +58,13 @@ fn main() {
     let start_pos = 0;
     let mut key_batch_size = 500;  // generate keys in batches    
     let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
+    let mut code_constant=5; // code constant
 
     //----------------------------------------------------------------------------------------------
     //                   Key Generation
     //----------------------------------------------------------------------------------------------   
     let kg_timer = start_timer!(|| "Key Generation");
-    let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size);
+    let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
     let total_keys = x_bar_matrix[0].len();  //code length
     let crs = CRS::<E>::new(batch_size);
     let mut db: Database;

@@ -76,7 +76,7 @@ fn generate_x_bar_matrix(x: &[Vec<u8>], f: &[u8], c: usize) -> Vec<Vec<u8>> {
 
     x_bar
 }
-pub fn code_generator(n: usize, c: usize) 
+pub fn code_generator(n: usize, c: usize, code_constant: usize) 
 -> (Vec<f64>, Vec<Vec<u8>>, Vec<u8>, Vec<Vec<u8>>)
 {
     // n: number of users
@@ -84,7 +84,7 @@ pub fn code_generator(n: usize, c: usize)
     let log_c = (c as f64).ln(); 
     let x = (log_c * log_c).floor() as usize;
     // calulate code length ell
-    let ell = 5 * c*c* x ;
+    let ell = code_constant * c*c* x ;
     //print code lengthe as the value of ell
     //println!("Code length (ell)= 5 * c *c *log_c*log_c: {}", ell);
 
@@ -273,7 +273,7 @@ mod code_test {
     fn test_code_gen_and_trace() {
         let n = 1 << 5; // number of users
         let c = n / 2;  // collusion size
-
+        let code_constant = 5; // code constant
         
         //let corrupt_indices = vec![1, 2, 3, 4, 5, 12, 13, 14]; // or any number of indices        
         let mut corrupt_indices: Vec<usize> = (0..c).collect();
@@ -281,7 +281,7 @@ mod code_test {
 
 
         // Generate code components
-        let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, c);
+        let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, c, code_constant);
         let mut w_star: Vec<char> = vec![];
 
         
