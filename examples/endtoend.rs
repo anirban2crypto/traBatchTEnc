@@ -20,6 +20,7 @@ use redb::{Database,ReadableTable, TableDefinition};
 use std::result::Result;
 use ark_std::rand::Rng;
 use ark_serialize::CanonicalSerialize;
+use rand::thread_rng;
 
 const DB_PATH: &str = "ttbe_database_ete.redb";
 const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
@@ -32,8 +33,8 @@ type G1 = <E as Pairing>::G1;
 type G2 = <E as Pairing>::G2;
 
 fn main() {
-    let args: Vec<String> = std::env::args().collect();
-    let mut rng = ark_std::test_rng();
+    let args: Vec<String> = std::env::args().collect();    
+    let mut rng = thread_rng();   
     //let mut batch_size = 8;   // batch size for encryption
     //let mut n = 1 << 4;       // number of users
     let batch_size: usize = if args.len() > 2 {
