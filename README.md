@@ -3,7 +3,7 @@
 
 Adapted from: Rust implementation https://github.com/guruvamsi-policharla/batched-threshold-pp the improved batched-threshold encryption scheme introduced in [ePrint:2024/1516](https://eprint.iacr.org/2024/1516).
 
-**copyright notice also inherited from previous work** 
+**The copyright notice is included from prior work."** 
 
 
 #Benchmarking
