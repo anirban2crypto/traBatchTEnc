@@ -2,7 +2,7 @@
 
 ### 📄 Declaration
 
-This version includes improvements and new features built on top of the original batched-threshold encryption scheme [guruvamsi-policharla/batched-threshold-pp]( https://github.com/guruvamsi-policharla/batched-threshold-pp an improved batched-threshold encryption scheme as described in [ePrint:2024/151.
+This version includes improvements and new features built on top of the original batched-threshold encryption scheme [guruvamsi-policharla/batched-threshold-pp](https://github.com/guruvamsi-policharla/batched-threshold-pp) an improved batched-threshold encryption scheme as described in [ePrint:2024/151].
 
 The copyright notice has been retained from the original work.
 
