@@ -20,28 +20,28 @@ You can use the following scripts to run benchmarks:
 Use the following commands to test and debug different components of the implementation:
 
 
-## Run end-to-end example with full output
+### Run end-to-end example with full output
 cargo run --example endtoend -- --nocapture
 
-## Test Key Generation
+### Test Key Generation
 cargo test --features KeyTest -- --nocapture
 
-## Test CRS Generation
+### Test CRS Generation
 cargo test --features CRSTest -- --nocapture
 
-## Test Encryption
+### Test Encryption
 cargo test --features EncTest -- --nocapture
 
-## Test Fingerprinting Code
+### Test Fingerprinting Code
 cargo test --features CodeTest -- --nocapture
 
-## Test Decoder
+### Test Decoder
 cargo test --features DecoderTest -- --nocapture
 
-## Test Tracing
+### Test Tracing
 cargo test --features TraceTest -- --nocapture
 
-### ⚠️ Disclaimer
+## ⚠️ Disclaimer
 
 Please note that this code has **not been cleaned for compiler warnings**. Compilation may produce warnings that have not been addressed.
 
