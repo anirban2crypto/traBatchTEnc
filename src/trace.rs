@@ -257,7 +257,7 @@ mod TraceTest {
         let mut batch_size = 4;
         let mut n = 1 << 4;       // number of users
         let mut t = n / 2 - 1;    // threshold <=t secret sharing can not decrypt
-        let mut code_constant = 5;   // code constant
+        let mut code_constant = 10;   // code constant
         let coalition_size= n / 2;        
         let log_c = (coalition_size as f64).ln(); 
         let x = (log_c * log_c).floor() as usize;        
