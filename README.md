@@ -29,7 +29,9 @@ Use ```cargo test --features DecoderTest -- --nocapture``` to check correctness 
 
 Use ```cargo test --features TraceTest -- --nocapture``` to check correctness of the Trace
 
+### ⚠️ Disclaimer
 
+Please note that this code has **not been cleaned for compiler warnings**. Compilation may produce warnings that have not been addressed.
 
 **WARNING:** This is an academic proof-of-concept prototype, and in particular has not received careful code review. This implementation is NOT ready for production use.
 
