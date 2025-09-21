@@ -6,28 +6,40 @@ Adapted from: Rust implementation https://github.com/guruvamsi-policharla/batche
 **The copyright notice is included from prior work.** 
 
 
-#Benchmarking
+## 📊 Benchmarking
 
-runscript.sh
+You can use the following scripts to run benchmarks:
 
-runtrace.sh
+- `runscript.sh` – Main benchmarking script  
+- `runtrace.sh` – Benchmarking for trace functionality
+
+---
+
+## 🐞 Debugging & Testing
+
+Use the following commands to test and debug different components of the implementation:
 
 
-#Debuging 
+# Run end-to-end example with full output
+cargo run --example endtoend -- --nocapture
 
-Use ```cargo run --example endtoend -- --nocapture``` to check correctness of the implementation.
+# Test Key Generation
+cargo test --features KeyTest -- --nocapture
 
-Use ```cargo test --features KeyTest -- --nocapture``` to check correctness of the keygen
+# Test CRS Generation
+cargo test --features CRSTest -- --nocapture
 
-Use ```cargo test --features CRSTest -- --nocapture``` to check correctness of the crsgen
+# Test Encryption
+cargo test --features EncTest -- --nocapture
 
-Use ```cargo test --features EncTest -- --nocapture``` to check correctness of the enc
+# Test Fingerprinting Code
+cargo test --features CodeTest -- --nocapture
 
-Use ```cargo test --features CodeTest -- --nocapture``` to check correctness of the fingerprinting code
+# Test Decoder
+cargo test --features DecoderTest -- --nocapture
 
-Use ```cargo test --features DecoderTest -- --nocapture``` to check correctness of the decoder
-
-Use ```cargo test --features TraceTest -- --nocapture``` to check correctness of the Trace
+# Test Tracing
+cargo test --features TraceTest -- --nocapture
 
 ### ⚠️ Disclaimer
 
