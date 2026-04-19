@@ -32,6 +32,40 @@ type Fr = <E as Pairing>::ScalarField;
 type G1 = <E as Pairing>::G1;
 type G2 = <E as Pairing>::G2;
 
+fn fmt_size(bytes: usize) -> String {
+    if bytes < 1024 {
+        format!("{} B", bytes)
+    } else if bytes < 1_048_576 {
+        format!("{} KB", bytes / 1024)
+    } else {
+        format!("{:.1} MB", bytes as f64 / 1_048_576.0)
+    }
+}
+
+fn print_run_header(title: &str, batch_size: usize, n: usize, code_constant: usize, coalition_size: usize, total_keys: usize) {
+    println!("╔{}╗", "═".repeat(61));
+    println!("║{:^61}║", title);
+    println!("╠{}╣", "═".repeat(61));
+    println!("║{:<61}║", format!("  Batch size : {:>4}    Users (n) : {:>3}    Code constant : {:>3}", batch_size, n, code_constant));
+    println!("║{:<61}║", format!("  Coalition  : {:>4}    Total keys : {:>6}", coalition_size, total_keys));
+    println!("╚{}╝", "═".repeat(61));
+    println!();
+}
+
+fn print_sizes_table(sk_per_key: usize, pk_total: usize, ct: usize, pd: usize, sigma: usize, total_keys: usize) {
+    let sk_label = format!("  Secret key  ({} keys)", total_keys);
+    println!();
+    println!("┌{}┐", "─".repeat(61));
+    println!("│{:^61}│", "Communication Costs");
+    println!("├{}┬{}┤", "─".repeat(38), "─".repeat(22));
+    println!("│ {:<36} │ {:>20} │", sk_label,                        fmt_size(sk_per_key * total_keys));
+    println!("│ {:<36} │ {:>20} │", "  Public key + CRS",            fmt_size(pk_total));
+    println!("│ {:<36} │ {:>20} │", "  Ciphertext  (per batch)",     fmt_size(ct));
+    println!("│ {:<36} │ {:>20} │", "  Partial decryption (per user)", fmt_size(pd));
+    println!("│ {:<36} │ {:>20} │", "  Sigma  (aggregated)",         fmt_size(sigma));
+    println!("└{}┴{}┘", "─".repeat(38), "─".repeat(22));
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();    
     let mut rng = thread_rng();   
@@ -66,12 +100,12 @@ fn main() {
 
     //----------------------------------------------------------------------------------------------
     //                   Key Generation
-    //----------------------------------------------------------------------------------------------   
-    let kg_timer = start_timer!(|| "Key Generation");
+    //----------------------------------------------------------------------------------------------
     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
-    let total_keys = x_bar_matrix[0].len();  //code length
-    println!("Batch size: {}, Number of users: {},code_constant: {} ,coalition size: {}, total keys: {}",
-     batch_size, n,code_constant,coalition_size,total_keys);
+    let total_keys = x_bar_matrix[0].len();
+    print_run_header("Traceable Batch Threshold Encryption — End-to-End",
+        batch_size, n, code_constant, coalition_size, total_keys);
+    let kg_timer = start_timer!(|| "Key Generation");
     let crs = CRS::<E>::new(batch_size);
     let mut db: Database;
     if !Path::new(DB_PATH).exists(){
@@ -206,28 +240,6 @@ fn main() {
     //----------------------------------------------------------------------------------------------
     drop(db);
     fs::remove_file(DB_PATH).expect("Failed to delete database file");
-    let mut total_sk_size=sk_size * total_keys;
-    if sk_size * total_keys < 1024 {
-        println!("Secret key size: {} bytes", total_sk_size);
-    } else if sk_size * total_keys < 1048576 {
-        total_sk_size=total_sk_size/1024;
-        println!("Secret key size: {} KB", total_sk_size);
-    } else {
-        total_sk_size=total_sk_size/1048576;
-        println!("Secret key size: {} MB", total_sk_size);
-    }    
-    let mut total_pk_size=pk_size * total_keys + crs_size;
-    if total_pk_size < 1024 {
-        println!("Public key size: {} bytes", total_pk_size);
-    } else if total_pk_size < 1048576 {
-        total_pk_size=total_pk_size/1024;
-        println!("Public key size: {} KB", total_pk_size);
-    } else {
-        total_pk_size=total_pk_size/1048576;
-        println!("Public key size: {} MB", total_pk_size);
-    }
-    println!("Ciphertext size: {} bytes", ct_size);
-    println!("Partial Decryption size: {} bytes", total_pd_size);
-    println!("Sigma size: {} bytes", sigma_size);
+    print_sizes_table(sk_size, pk_size * total_keys + crs_size, ct_size, total_pd_size, sigma_size, total_keys);
 
 }

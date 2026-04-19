@@ -32,6 +32,38 @@ type E = Bls12_381;
 type Fr = <E as Pairing>::ScalarField;
 type G1 = <E as Pairing>::G1;
 type G2 = <E as Pairing>::G2;
+
+fn print_run_header(title: &str, batch_size: usize, n: usize, code_constant: usize, coalition_size: usize, total_keys: usize) {
+    println!("╔{}╗", "═".repeat(61));
+    println!("║{:^61}║", title);
+    println!("╠{}╣", "═".repeat(61));
+    println!("║{:<61}║", format!("  Batch size : {:>4}    Users (n) : {:>3}    Code constant : {:>3}", batch_size, n, code_constant));
+    println!("║{:<61}║", format!("  Coalition  : {:>4}    Total keys : {:>6}", coalition_size, total_keys));
+    println!("╚{}╝", "═".repeat(61));
+    println!();
+}
+
+fn print_trace_result(trace_result: &[usize], corrupt_indices: &[usize]) {
+    println!();
+    println!("┌{}┐", "─".repeat(61));
+    println!("│{:^61}│", "Tracing Result");
+    println!("├{}┤", "─".repeat(61));
+    if trace_result.is_empty() {
+        println!("│{:<61}│", "  Status  : ✗  No accused users found");
+    } else {
+        let all_in_coalition = trace_result.iter().all(|u| corrupt_indices.contains(u));
+        let status = if all_in_coalition {
+            "  Status  : ✓  All accused users are in the coalition"
+        } else {
+            "  Status  : ✗  Some accused users not in coalition"
+        };
+        println!("│{:<61}│", status);
+        println!("│{:<61}│", format!("  Accused : {:?}", trace_result));
+    }
+    println!("└{}┘", "─".repeat(61));
+    println!();
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     let mut rng = rand::thread_rng();
@@ -73,8 +105,8 @@ fn main() {
     let log_c = (coalition_size as f64).ln(); 
     let x = (log_c * log_c).floor() as usize;        
     let total_keys = code_constant * coalition_size*coalition_size* x ; // code length   
-    println!("Batch size: {}, Number of users: {}, coalition size: {},code_constant: {}, total_keys {}",
-     batch_size, n,coalition_size,code_constant,total_keys);
+    print_run_header("Traceable Batch Threshold Encryption — Tracing",
+        batch_size, n, code_constant, coalition_size, total_keys);
     let crs = CRS::<E>::new(batch_size);
     let mut db: Database;
     if !Path::new(DB_PATH).exists(){
@@ -108,23 +140,7 @@ fn main() {
     // if there exist a users in trace_result 
     // who is not in corrupt_indices  print trace unsuccessful
     // else print trace_result
-    if trace_result.is_empty() {
-        println!("Tracing unsuccessful: No accused users.");
-    } else {
-        let mut tracing_successful = true;
-        for &user in &trace_result {
-            if !corrupt_indices.contains(&(user)) {
-                tracing_successful = false;
-                break;
-            }
-        }
-        if tracing_successful {
-            println!("Tracing successful: Atleast one accused users are in the coalition.");
-        } else {
-            println!("Tracing unsuccessful: Some accused users are not in the coalition.");
-        }
-    }
-    println!("Trace result: {:?}", trace_result);
+    print_trace_result(&trace_result, &corrupt_indices);
 
     //close the database
     drop(db);
