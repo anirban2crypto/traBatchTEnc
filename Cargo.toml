@@ -6,6 +6,12 @@ authors = ["Anirban Chakrabarti"]
 build = "build.rs"
 
 
+[lints.rust]
+unused = "allow"
+dead_code = "allow"
+non_snake_case = "allow"
+unexpected_cfgs = "allow"
+
 [build-dependencies]
 redb = "1.1"  # or whatever version you're using
 

@@ -1,0 +1,1990 @@
+╔═════════════════════════════════════════════════════════════╗
+║                                                             ║
+║       Traceable Batch Threshold Encryption — Benchmarks   ║
+╠═════════════════════════════════════════════════════════════╣
+║  Host    : anirban-UX430UQ                                  ║
+║  CPU     : Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz         ║
+║  Cores   : 4 logical / 2 physical per socket                ║
+║  RAM     : 7.6Gi total                                      ║
+║  OS      : Linux 6.17.0-20-generic x86_64                   ║
+║  Rust    : rustc 1.94.1 (e408947bf 2026-03-25)              ║
+║  Date    : 2026-04-19 16:56:23                              ║
+╚═════════════════════════════════════════════════════════════╝
+
+── Table: varying batch size B (n=8..64, fixed code structure) ──────────────
+   Compiling traceable-batch-threshold v0.1.0 (/home/anirban/crypto/git/traBatchTEnc)
+warning: unexpected `cfg` condition name: `test_utils`
+   --> src/utils.rs:210:7
+    |
+210 | #[cfg(test_utils)]
+    |       ^^^^^^^^^^
+    |
+    = help: expected names are: `docsrs`, `feature`, and `test` and 31 more
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(test_utils)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(test_utils)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unused import: `VariableBaseMSM`
+ --> src/utils.rs:1:32
+  |
+1 | use ark_ec::{pairing::Pairing, VariableBaseMSM};
+  |                                ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `DenseUVPolynomial`, `Polynomial`, and `univariate::DensePolynomial`
+ --> src/utils.rs:4:25
+  |
+4 |    domain::DomainCoeff, univariate::DensePolynomial, DenseUVPolynomial, EvaluationDomain,
+  |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+5 |    Polynomial, Radix2EvaluationDomain,
+  |    ^^^^^^^^^^
+
+warning: unused import: `fetch_one_key`
+  --> src/encryption.rs:14:32
+   |
+14 | use crate::keygen::{PkCombined,fetch_one_key};
+   |                                ^^^^^^^^^^^^^
+
+warning: unused import: `read_crs`
+  --> src/encryption.rs:16:21
+   |
+16 | use crate::crsgen::{read_crs};
+   |                     ^^^^^^^^
+
+warning: unused import: `Database`
+  --> src/encryption.rs:17:12
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |            ^^^^^^^^
+
+warning: unused import: `rand::thread_rng`
+ --> src/fincode.rs:2:5
+  |
+2 | use rand::thread_rng;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+ --> src/decoder.rs:1:5
+  |
+1 | use std::path::Path;
+  |     ^^^^^^^^^^^^^^^
+
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> src/decoder.rs:4:32
+  |
+4 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+
+warning: unused import: `Radix2EvaluationDomain`
+ --> src/decoder.rs:5:34
+  |
+5 | use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
+  |                                  ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `UniformRand`, `Zero`, `end_timer`, and `start_timer`
+ --> src/decoder.rs:6:15
+  |
+6 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |               ^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^ ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> src/decoder.rs:7:5
+  |
+7 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `CRS`, `OneKey`, `PkCombined`, `bipart_lagrange_interp_eval`, `encrypt`, `gen_batch_keys`, `hash_to_bytes`, `insert_crs`, `lagrange_interp_eval`, `open_all_values`, and `xor`
+  --> src/decoder.rs:9:14
+   |
+ 9 |     keygen::{OneKey,fetch_one_key,PkCombined,gen_batch_keys},
+   |              ^^^^^^               ^^^^^^^^^^ ^^^^^^^^^^^^^^
+10 |     crsgen::{CRS,read_crs,insert_crs},
+   |              ^^^          ^^^^^^^^^^
+11 |     decryption::{aggregate_partial_decryptions, decrypt_all,get_digest, SecretKey},
+12 |     encryption::{encrypt, Ciphertext},
+   |                  ^^^^^^^
+13 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> src/decoder.rs:16:5
+   |
+16 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_std::rand::Rng`
+  --> src/decoder.rs:17:5
+   |
+17 | use ark_std::rand::Rng;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+ --> src/trace.rs:1:5
+  |
+1 | use std::path::Path;
+  |     ^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::BTreeMap`
+ --> src/trace.rs:2:5
+  |
+2 | use std::collections::BTreeMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_bls12_381::Bls12_381`
+ --> src/trace.rs:3:5
+  |
+3 | use ark_bls12_381::Bls12_381;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> src/trace.rs:4:32
+  |
+4 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+
+warning: unused imports: `Zero`, `end_timer`, and `start_timer`
+ --> src/trace.rs:6:15
+  |
+6 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |               ^^^^^^^^^  ^^^^^^^^^^^              ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> src/trace.rs:7:5
+  |
+7 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `CRS`, `PkCombined`, `SecretKey`, `aggregate_partial_decryptions`, `bipart_lagrange_interp_eval`, `decrypt_all`, `fetch_one_key`, `gen_batch_keys`, `get_digest`, `hash_to_bytes`, `insert_crs`, `lagrange_interp_eval`, `open_all_values`, and `xor`
+  --> src/trace.rs:9:21
+   |
+ 9 |     keygen::{OneKey,fetch_one_key,PkCombined,gen_batch_keys, fetch_batch_of_keys},
+   |                     ^^^^^^^^^^^^^ ^^^^^^^^^^ ^^^^^^^^^^^^^^
+10 |     crsgen::{CRS,read_crs,insert_crs},
+   |              ^^^          ^^^^^^^^^^
+11 |     decryption::{aggregate_partial_decryptions, decrypt_all,get_digest, SecretKey},
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^ ^^^^^^^^^^  ^^^^^^^^^
+...
+15 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> src/trace.rs:18:5
+   |
+18 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_std::rand::Rng`
+  --> src/trace.rs:19:5
+   |
+19 | use ark_std::rand::Rng;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/trace.rs:17:21
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused import: `One`
+ --> src/utils.rs:8:15
+  |
+8 | use ark_std::{One, Zero};
+  |               ^^^
+
+warning: unused import: `domain::EvaluationDomain`
+ --> src/keygen.rs:4:16
+  |
+4 | use ark_poly::{domain::EvaluationDomain};
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/encryption.rs:17:21
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused import: `EvaluationDomain`
+ --> src/decoder.rs:5:16
+  |
+5 | use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
+  |                ^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/decoder.rs:15:21
+   |
+15 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused variable: `e`
+  --> src/crsgen.rs:91:13
+   |
+91 |         Err(e) => {
+   |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:100:13
+    |
+100 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:110:13
+    |
+110 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:132:13
+    |
+132 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `g`
+  --> src/keygen.rs:56:13
+   |
+56 |         let g = E::G1::generator(); // g is not used, consider removing if it's not needed later.
+   |             ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `h`
+  --> src/keygen.rs:57:13
+   |
+57 |         let h = E::G2::generator();       
+   |             ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:179:13
+    |
+179 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:188:13
+    |
+188 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:198:13
+    |
+198 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:220:13
+    |
+220 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `sig`
+  --> src/encryption.rs:38:26
+   |
+38 |     pub fn verify(&self, sig: E::G1) {
+   |                          ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: unused variable: `sig_sk`
+  --> src/encryption.rs:81:10
+   |
+81 |     let (sig_sk, sig_pk, varphi) = result.unwrap();
+   |          ^^^^^^ help: if this is intentional, prefix it with an underscore: `_sig_sk`
+
+warning: unused variable: `delta`
+  --> src/decryption.rs:94:9
+   |
+94 |     let delta = h_j_bid + com;
+   |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_delta`
+
+warning: unused variable: `current_marks`
+   --> src/fincode.rs:124:9
+    |
+124 |     let current_marks = w_star.iter().filter(|&&b| b == '?').count();
+    |         ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_current_marks`
+
+warning: variable does not need to be mutable
+   --> src/fincode.rs:239:9
+    |
+239 |     let mut threshold = max.floor(); // Example threshold for Z-score
+    |         ----^^^^^^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:36:5
+   |
+36 |     mut coalition_size: usize,
+   |     ----^^^^^^^^^^^^^^
+   |     |
+   |     help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:41:13
+   |
+41 |         let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
+   |             ----^^^^^^^^^^^^^^^
+   |             |
+   |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:47:13
+   |
+47 |         let mut key_batch_size = 500; // read keys in batches
+   |             ----^^^^^^^^^^^^^^
+   |             |
+   |             help: remove this `mut`
+
+warning: unused variable: `t`
+  --> src/trace.rs:34:5
+   |
+34 |     t: usize,
+   |     ^ help: if this is intentional, prefix it with an underscore: `_t`
+
+warning: unused variable: `sig`
+   --> src/trace.rs:146:26
+    |
+146 |                 let (cxt,sig) = encrypt::<E>(msg, x, h_j_bid, crs.htau, key.pk_combined.clone(), &mut rng);
+    |                          ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: unused variable: `dec_suc_111`
+   --> src/trace.rs:204:20
+    |
+204 |                let dec_suc_111=true;
+    |                    ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_dec_suc_111`
+
+warning: value assigned to `fetch_batch_size` is never read
+  --> src/trace.rs:83:44
+   |
+83 |                 let mut fetch_batch_size = key_batch_size;
+   |                                            ^^^^^^^^^^^^^^
+   |
+   = help: maybe it is overwritten before being read?
+   = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `DB_PATH` is never used
+  --> src/crsgen.rs:11:7
+   |
+11 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `DB_PATH` is never used
+  --> src/keygen.rs:17:7
+   |
+17 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `DB_PATH` is never used
+  --> src/encryption.rs:21:7
+   |
+21 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/encryption.rs:22:7
+   |
+22 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/encryption.rs:23:7
+   |
+23 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: function `percentile` is never used
+   --> src/fincode.rs:206:4
+    |
+206 | fn percentile(sorted: &[f64], p: f64) -> f64 {
+    |    ^^^^^^^^^^
+
+warning: constant `DB_PATH` is never used
+  --> src/decoder.rs:19:7
+   |
+19 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/decoder.rs:20:7
+   |
+20 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/decoder.rs:21:7
+   |
+21 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: type alias `E` is never used
+  --> src/decoder.rs:24:6
+   |
+24 | type E = Bls12_381;
+   |      ^
+
+warning: type alias `Fr` is never used
+  --> src/decoder.rs:25:6
+   |
+25 | type Fr = <E as Pairing>::ScalarField;
+   |      ^^
+
+warning: type alias `G1` is never used
+  --> src/decoder.rs:26:6
+   |
+26 | type G1 = <E as Pairing>::G1;
+   |      ^^
+
+warning: constant `DB_PATH` is never used
+  --> src/trace.rs:22:7
+   |
+22 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/trace.rs:23:7
+   |
+23 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/trace.rs:24:7
+   |
+24 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: structure field `X` should have a snake case name
+  --> src/keygen.rs:33:9
+   |
+33 |     pub X: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `x`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: structure field `Y` should have a snake case name
+  --> src/keygen.rs:34:9
+   |
+34 |     pub Y: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `y`
+
+warning: structure field `Z` should have a snake case name
+  --> src/keygen.rs:35:9
+   |
+35 |     pub Z: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `z`
+
+warning: variable `X` should have a snake case name
+  --> src/keygen.rs:97:13
+   |
+97 |         let X = E::G2::generator() * (sk_alpha * sk_y * sk_z);
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `x`
+
+warning: variable `Y` should have a snake case name
+  --> src/keygen.rs:98:13
+   |
+98 |         let Y = E::G2::generator() * sk_y;
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `y`
+
+warning: variable `Z` should have a snake case name
+  --> src/keygen.rs:99:13
+   |
+99 |         let Z = E::G2::generator() * sk_z;
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `z`
+
+warning: `traceable-batch-threshold` (lib) generated 73 warnings (run `cargo fix --lib -p traceable-batch-threshold` to apply 44 suggestions)
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> examples/endtoend.rs:6:32
+  |
+6 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Zero`
+ --> examples/endtoend.rs:8:51
+  |
+8 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |                                                   ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> examples/endtoend.rs:9:5
+  |
+9 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `OneKey`, `bipart_lagrange_interp_eval`, `decoder`, `fetch_batch_of_keys`, `hash_to_bytes`, `lagrange_interp_eval`, `open_all_values`, `tracing_algorithm`, and `xor`
+  --> examples/endtoend.rs:11:36
+   |
+11 |     keygen::{SkCombined,PkCombined,OneKey,fetch_one_key,gen_batch_keys, fetch_batch_of_keys},
+   |                                    ^^^^^^                               ^^^^^^^^^^^^^^^^^^^
+...
+15 |     fincode::{code_generator,tracing_algorithm},
+   |                              ^^^^^^^^^^^^^^^^^
+16 |     decoder::{decoder},
+   |               ^^^^^^^
+17 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> examples/endtoend.rs:20:5
+   |
+20 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> examples/endtoend.rs:19:21
+   |
+19 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:84:9
+   |
+84 |     let mut code_constant: usize = if args.len() > 4 {
+   |         ----^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:89:9
+   |
+89 |     let mut coalition_size: usize = if args.len() > 5 {
+   |         ----^^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:95:9
+   |
+95 |     let mut t = coalition_size - 1;    // threshold <=t secret sharing can not decrypt
+   |         ----^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:98:9
+   |
+98 |     let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
+   |         ----^^^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> examples/endtoend.rs:110:9
+    |
+110 |     let mut db: Database;
+    |         ----^^
+    |         |
+    |         help: remove this `mut`
+
+warning: unused variable: `start_pos`
+  --> examples/endtoend.rs:96:9
+   |
+96 |     let start_pos = 0;
+   |         ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_start_pos`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `p_array`
+   --> examples/endtoend.rs:104:10
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |          ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_p_array`
+
+warning: unused variable: `x_matrix`
+   --> examples/endtoend.rs:104:19
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |                   ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_x_matrix`
+
+warning: unused variable: `f_array`
+   --> examples/endtoend.rs:104:29
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |                             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_f_array`
+
+warning: unused variable: `sig`
+   --> examples/endtoend.rs:184:18
+    |
+184 |         let (cxt,sig) = encrypt::<E>(msg, x, h_j_bid, crs.htau, key.pk_combined.clone(), &mut rng);
+    |                  ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> examples/endtoend.rs:26:7
+   |
+26 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> examples/endtoend.rs:27:7
+   |
+27 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: type alias `G2` is never used
+  --> examples/endtoend.rs:33:6
+   |
+33 | type G2 = <E as Pairing>::G2;
+   |      ^^
+
+warning: `traceable-batch-threshold` (example "endtoend") generated 19 warnings (run `cargo fix --example "endtoend" -p traceable-batch-threshold` to apply 15 suggestions)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 3.64s
+     Running `target/debug/examples/endtoend --nocapture 128 8 30`
+╔═════════════════════════════════════════════════════════════╗
+║      Traceable Batch Threshold Encryption — End-to-End      ║
+╠═════════════════════════════════════════════════════════════╣
+║  Batch size :  128    Users (n) :   8    Code constant :  30║
+║  Coalition  :    4    Total keys :    480                   ║
+╚═════════════════════════════════════════════════════════════╝
+
+Start:   Key Generation
+··End:     Key Generation ..........................................................2.527s
+Start:   Encryption
+··End:     Encryption ..............................................................2.911s
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................12.256ms
+Start:   Combine
+··End:     Combine .................................................................452.910µs
+Start:   Decryption
+··End:     Decryption ..............................................................1.117s
+
+┌─────────────────────────────────────────────────────────────┐
+│                     Communication Costs                     │
+├──────────────────────────────────────┬──────────────────────┤
+│   Secret key  (480 keys)             │               292 KB │
+│   Public key + CRS                   │               153 KB │
+│   Ciphertext  (per batch)            │                544 B │
+│   Partial decryption (per user)      │                 57 B │
+│   Sigma  (aggregated)                │                 96 B │
+└──────────────────────────────────────┴──────────────────────┘
+   Compiling traceable-batch-threshold v0.1.0 (/home/anirban/crypto/git/traBatchTEnc)
+warning: unexpected `cfg` condition name: `test_utils`
+   --> src/utils.rs:210:7
+    |
+210 | #[cfg(test_utils)]
+    |       ^^^^^^^^^^
+    |
+    = help: expected names are: `docsrs`, `feature`, and `test` and 31 more
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(test_utils)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(test_utils)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unused import: `VariableBaseMSM`
+ --> src/utils.rs:1:32
+  |
+1 | use ark_ec::{pairing::Pairing, VariableBaseMSM};
+  |                                ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `DenseUVPolynomial`, `Polynomial`, and `univariate::DensePolynomial`
+ --> src/utils.rs:4:25
+  |
+4 |    domain::DomainCoeff, univariate::DensePolynomial, DenseUVPolynomial, EvaluationDomain,
+  |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+5 |    Polynomial, Radix2EvaluationDomain,
+  |    ^^^^^^^^^^
+
+warning: unused import: `fetch_one_key`
+  --> src/encryption.rs:14:32
+   |
+14 | use crate::keygen::{PkCombined,fetch_one_key};
+   |                                ^^^^^^^^^^^^^
+
+warning: unused import: `read_crs`
+  --> src/encryption.rs:16:21
+   |
+16 | use crate::crsgen::{read_crs};
+   |                     ^^^^^^^^
+
+warning: unused import: `Database`
+  --> src/encryption.rs:17:12
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |            ^^^^^^^^
+
+warning: unused import: `rand::thread_rng`
+ --> src/fincode.rs:2:5
+  |
+2 | use rand::thread_rng;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+ --> src/decoder.rs:1:5
+  |
+1 | use std::path::Path;
+  |     ^^^^^^^^^^^^^^^
+
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> src/decoder.rs:4:32
+  |
+4 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+
+warning: unused import: `Radix2EvaluationDomain`
+ --> src/decoder.rs:5:34
+  |
+5 | use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
+  |                                  ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `UniformRand`, `Zero`, `end_timer`, and `start_timer`
+ --> src/decoder.rs:6:15
+  |
+6 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |               ^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^ ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> src/decoder.rs:7:5
+  |
+7 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `CRS`, `OneKey`, `PkCombined`, `bipart_lagrange_interp_eval`, `encrypt`, `gen_batch_keys`, `hash_to_bytes`, `insert_crs`, `lagrange_interp_eval`, `open_all_values`, and `xor`
+  --> src/decoder.rs:9:14
+   |
+ 9 |     keygen::{OneKey,fetch_one_key,PkCombined,gen_batch_keys},
+   |              ^^^^^^               ^^^^^^^^^^ ^^^^^^^^^^^^^^
+10 |     crsgen::{CRS,read_crs,insert_crs},
+   |              ^^^          ^^^^^^^^^^
+11 |     decryption::{aggregate_partial_decryptions, decrypt_all,get_digest, SecretKey},
+12 |     encryption::{encrypt, Ciphertext},
+   |                  ^^^^^^^
+13 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> src/decoder.rs:16:5
+   |
+16 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_std::rand::Rng`
+  --> src/decoder.rs:17:5
+   |
+17 | use ark_std::rand::Rng;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+ --> src/trace.rs:1:5
+  |
+1 | use std::path::Path;
+  |     ^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::BTreeMap`
+ --> src/trace.rs:2:5
+  |
+2 | use std::collections::BTreeMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_bls12_381::Bls12_381`
+ --> src/trace.rs:3:5
+  |
+3 | use ark_bls12_381::Bls12_381;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> src/trace.rs:4:32
+  |
+4 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+
+warning: unused imports: `Zero`, `end_timer`, and `start_timer`
+ --> src/trace.rs:6:15
+  |
+6 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |               ^^^^^^^^^  ^^^^^^^^^^^              ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> src/trace.rs:7:5
+  |
+7 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `CRS`, `PkCombined`, `SecretKey`, `aggregate_partial_decryptions`, `bipart_lagrange_interp_eval`, `decrypt_all`, `fetch_one_key`, `gen_batch_keys`, `get_digest`, `hash_to_bytes`, `insert_crs`, `lagrange_interp_eval`, `open_all_values`, and `xor`
+  --> src/trace.rs:9:21
+   |
+ 9 |     keygen::{OneKey,fetch_one_key,PkCombined,gen_batch_keys, fetch_batch_of_keys},
+   |                     ^^^^^^^^^^^^^ ^^^^^^^^^^ ^^^^^^^^^^^^^^
+10 |     crsgen::{CRS,read_crs,insert_crs},
+   |              ^^^          ^^^^^^^^^^
+11 |     decryption::{aggregate_partial_decryptions, decrypt_all,get_digest, SecretKey},
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^ ^^^^^^^^^^  ^^^^^^^^^
+...
+15 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> src/trace.rs:18:5
+   |
+18 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_std::rand::Rng`
+  --> src/trace.rs:19:5
+   |
+19 | use ark_std::rand::Rng;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/trace.rs:17:21
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused import: `One`
+ --> src/utils.rs:8:15
+  |
+8 | use ark_std::{One, Zero};
+  |               ^^^
+
+warning: unused import: `domain::EvaluationDomain`
+ --> src/keygen.rs:4:16
+  |
+4 | use ark_poly::{domain::EvaluationDomain};
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/encryption.rs:17:21
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused import: `EvaluationDomain`
+ --> src/decoder.rs:5:16
+  |
+5 | use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
+  |                ^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/decoder.rs:15:21
+   |
+15 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused variable: `e`
+  --> src/crsgen.rs:91:13
+   |
+91 |         Err(e) => {
+   |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:100:13
+    |
+100 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:110:13
+    |
+110 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:132:13
+    |
+132 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `g`
+  --> src/keygen.rs:56:13
+   |
+56 |         let g = E::G1::generator(); // g is not used, consider removing if it's not needed later.
+   |             ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `h`
+  --> src/keygen.rs:57:13
+   |
+57 |         let h = E::G2::generator();       
+   |             ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:179:13
+    |
+179 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:188:13
+    |
+188 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:198:13
+    |
+198 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:220:13
+    |
+220 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `sig`
+  --> src/encryption.rs:38:26
+   |
+38 |     pub fn verify(&self, sig: E::G1) {
+   |                          ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: unused variable: `sig_sk`
+  --> src/encryption.rs:81:10
+   |
+81 |     let (sig_sk, sig_pk, varphi) = result.unwrap();
+   |          ^^^^^^ help: if this is intentional, prefix it with an underscore: `_sig_sk`
+
+warning: unused variable: `delta`
+  --> src/decryption.rs:94:9
+   |
+94 |     let delta = h_j_bid + com;
+   |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_delta`
+
+warning: unused variable: `current_marks`
+   --> src/fincode.rs:124:9
+    |
+124 |     let current_marks = w_star.iter().filter(|&&b| b == '?').count();
+    |         ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_current_marks`
+
+warning: variable does not need to be mutable
+   --> src/fincode.rs:239:9
+    |
+239 |     let mut threshold = max.floor(); // Example threshold for Z-score
+    |         ----^^^^^^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:36:5
+   |
+36 |     mut coalition_size: usize,
+   |     ----^^^^^^^^^^^^^^
+   |     |
+   |     help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:41:13
+   |
+41 |         let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
+   |             ----^^^^^^^^^^^^^^^
+   |             |
+   |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:47:13
+   |
+47 |         let mut key_batch_size = 500; // read keys in batches
+   |             ----^^^^^^^^^^^^^^
+   |             |
+   |             help: remove this `mut`
+
+warning: unused variable: `t`
+  --> src/trace.rs:34:5
+   |
+34 |     t: usize,
+   |     ^ help: if this is intentional, prefix it with an underscore: `_t`
+
+warning: unused variable: `sig`
+   --> src/trace.rs:146:26
+    |
+146 |                 let (cxt,sig) = encrypt::<E>(msg, x, h_j_bid, crs.htau, key.pk_combined.clone(), &mut rng);
+    |                          ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: unused variable: `dec_suc_111`
+   --> src/trace.rs:204:20
+    |
+204 |                let dec_suc_111=true;
+    |                    ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_dec_suc_111`
+
+warning: value assigned to `fetch_batch_size` is never read
+  --> src/trace.rs:83:44
+   |
+83 |                 let mut fetch_batch_size = key_batch_size;
+   |                                            ^^^^^^^^^^^^^^
+   |
+   = help: maybe it is overwritten before being read?
+   = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `DB_PATH` is never used
+  --> src/crsgen.rs:11:7
+   |
+11 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `DB_PATH` is never used
+  --> src/keygen.rs:17:7
+   |
+17 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `DB_PATH` is never used
+  --> src/encryption.rs:21:7
+   |
+21 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/encryption.rs:22:7
+   |
+22 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/encryption.rs:23:7
+   |
+23 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: function `percentile` is never used
+   --> src/fincode.rs:206:4
+    |
+206 | fn percentile(sorted: &[f64], p: f64) -> f64 {
+    |    ^^^^^^^^^^
+
+warning: constant `DB_PATH` is never used
+  --> src/decoder.rs:19:7
+   |
+19 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/decoder.rs:20:7
+   |
+20 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/decoder.rs:21:7
+   |
+21 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: type alias `E` is never used
+  --> src/decoder.rs:24:6
+   |
+24 | type E = Bls12_381;
+   |      ^
+
+warning: type alias `Fr` is never used
+  --> src/decoder.rs:25:6
+   |
+25 | type Fr = <E as Pairing>::ScalarField;
+   |      ^^
+
+warning: type alias `G1` is never used
+  --> src/decoder.rs:26:6
+   |
+26 | type G1 = <E as Pairing>::G1;
+   |      ^^
+
+warning: constant `DB_PATH` is never used
+  --> src/trace.rs:22:7
+   |
+22 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/trace.rs:23:7
+   |
+23 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/trace.rs:24:7
+   |
+24 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: structure field `X` should have a snake case name
+  --> src/keygen.rs:33:9
+   |
+33 |     pub X: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `x`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: structure field `Y` should have a snake case name
+  --> src/keygen.rs:34:9
+   |
+34 |     pub Y: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `y`
+
+warning: structure field `Z` should have a snake case name
+  --> src/keygen.rs:35:9
+   |
+35 |     pub Z: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `z`
+
+warning: variable `X` should have a snake case name
+  --> src/keygen.rs:97:13
+   |
+97 |         let X = E::G2::generator() * (sk_alpha * sk_y * sk_z);
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `x`
+
+warning: variable `Y` should have a snake case name
+  --> src/keygen.rs:98:13
+   |
+98 |         let Y = E::G2::generator() * sk_y;
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `y`
+
+warning: variable `Z` should have a snake case name
+  --> src/keygen.rs:99:13
+   |
+99 |         let Z = E::G2::generator() * sk_z;
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `z`
+
+warning: `traceable-batch-threshold` (lib) generated 73 warnings (run `cargo fix --lib -p traceable-batch-threshold` to apply 44 suggestions)
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> examples/endtoend.rs:6:32
+  |
+6 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Zero`
+ --> examples/endtoend.rs:8:51
+  |
+8 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |                                                   ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> examples/endtoend.rs:9:5
+  |
+9 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `OneKey`, `bipart_lagrange_interp_eval`, `decoder`, `fetch_batch_of_keys`, `hash_to_bytes`, `lagrange_interp_eval`, `open_all_values`, `tracing_algorithm`, and `xor`
+  --> examples/endtoend.rs:11:36
+   |
+11 |     keygen::{SkCombined,PkCombined,OneKey,fetch_one_key,gen_batch_keys, fetch_batch_of_keys},
+   |                                    ^^^^^^                               ^^^^^^^^^^^^^^^^^^^
+...
+15 |     fincode::{code_generator,tracing_algorithm},
+   |                              ^^^^^^^^^^^^^^^^^
+16 |     decoder::{decoder},
+   |               ^^^^^^^
+17 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> examples/endtoend.rs:20:5
+   |
+20 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> examples/endtoend.rs:19:21
+   |
+19 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:84:9
+   |
+84 |     let mut code_constant: usize = if args.len() > 4 {
+   |         ----^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:89:9
+   |
+89 |     let mut coalition_size: usize = if args.len() > 5 {
+   |         ----^^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:95:9
+   |
+95 |     let mut t = coalition_size - 1;    // threshold <=t secret sharing can not decrypt
+   |         ----^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:98:9
+   |
+98 |     let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
+   |         ----^^^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> examples/endtoend.rs:110:9
+    |
+110 |     let mut db: Database;
+    |         ----^^
+    |         |
+    |         help: remove this `mut`
+
+warning: unused variable: `start_pos`
+  --> examples/endtoend.rs:96:9
+   |
+96 |     let start_pos = 0;
+   |         ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_start_pos`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `p_array`
+   --> examples/endtoend.rs:104:10
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |          ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_p_array`
+
+warning: unused variable: `x_matrix`
+   --> examples/endtoend.rs:104:19
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |                   ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_x_matrix`
+
+warning: unused variable: `f_array`
+   --> examples/endtoend.rs:104:29
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |                             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_f_array`
+
+warning: unused variable: `sig`
+   --> examples/endtoend.rs:184:18
+    |
+184 |         let (cxt,sig) = encrypt::<E>(msg, x, h_j_bid, crs.htau, key.pk_combined.clone(), &mut rng);
+    |                  ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> examples/endtoend.rs:26:7
+   |
+26 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> examples/endtoend.rs:27:7
+   |
+27 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: type alias `G2` is never used
+  --> examples/endtoend.rs:33:6
+   |
+33 | type G2 = <E as Pairing>::G2;
+   |      ^^
+
+warning: `traceable-batch-threshold` (example "endtoend") generated 19 warnings (run `cargo fix --example "endtoend" -p traceable-batch-threshold` to apply 15 suggestions)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.52s
+     Running `target/debug/examples/endtoend --nocapture 128 16 10`
+╔═════════════════════════════════════════════════════════════╗
+║      Traceable Batch Threshold Encryption — End-to-End      ║
+╠═════════════════════════════════════════════════════════════╣
+║  Batch size :  128    Users (n) :  16    Code constant :  10║
+║  Coalition  :    8    Total keys :   2560                   ║
+╚═════════════════════════════════════════════════════════════╝
+
+Start:   Key Generation
+··End:     Key Generation ..........................................................14.946s
+Start:   Encryption
+··End:     Encryption ..............................................................2.822s
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................16.455ms
+Start:   Combine
+··End:     Combine .................................................................1.273ms
+Start:   Decryption
+··End:     Decryption ..............................................................1.099s
+
+┌─────────────────────────────────────────────────────────────┐
+│                     Communication Costs                     │
+├──────────────────────────────────────┬──────────────────────┤
+│   Secret key  (2560 keys)            │               2.8 MB │
+│   Public key + CRS                   │               738 KB │
+│   Ciphertext  (per batch)            │                544 B │
+│   Partial decryption (per user)      │                 57 B │
+│   Sigma  (aggregated)                │                 96 B │
+└──────────────────────────────────────┴──────────────────────┘
+   Compiling traceable-batch-threshold v0.1.0 (/home/anirban/crypto/git/traBatchTEnc)
+warning: unexpected `cfg` condition name: `test_utils`
+   --> src/utils.rs:210:7
+    |
+210 | #[cfg(test_utils)]
+    |       ^^^^^^^^^^
+    |
+    = help: expected names are: `docsrs`, `feature`, and `test` and 31 more
+    = help: consider using a Cargo feature instead
+    = help: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:
+             [lints.rust]
+             unexpected_cfgs = { level = "warn", check-cfg = ['cfg(test_utils)'] }
+    = help: or consider adding `println!("cargo::rustc-check-cfg=cfg(test_utils)");` to the top of the `build.rs`
+    = note: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration
+    = note: `#[warn(unexpected_cfgs)]` on by default
+
+warning: unused import: `VariableBaseMSM`
+ --> src/utils.rs:1:32
+  |
+1 | use ark_ec::{pairing::Pairing, VariableBaseMSM};
+  |                                ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused imports: `DenseUVPolynomial`, `Polynomial`, and `univariate::DensePolynomial`
+ --> src/utils.rs:4:25
+  |
+4 |    domain::DomainCoeff, univariate::DensePolynomial, DenseUVPolynomial, EvaluationDomain,
+  |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^
+5 |    Polynomial, Radix2EvaluationDomain,
+  |    ^^^^^^^^^^
+
+warning: unused import: `fetch_one_key`
+  --> src/encryption.rs:14:32
+   |
+14 | use crate::keygen::{PkCombined,fetch_one_key};
+   |                                ^^^^^^^^^^^^^
+
+warning: unused import: `read_crs`
+  --> src/encryption.rs:16:21
+   |
+16 | use crate::crsgen::{read_crs};
+   |                     ^^^^^^^^
+
+warning: unused import: `Database`
+  --> src/encryption.rs:17:12
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |            ^^^^^^^^
+
+warning: unused import: `rand::thread_rng`
+ --> src/fincode.rs:2:5
+  |
+2 | use rand::thread_rng;
+  |     ^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+ --> src/decoder.rs:1:5
+  |
+1 | use std::path::Path;
+  |     ^^^^^^^^^^^^^^^
+
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> src/decoder.rs:4:32
+  |
+4 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+
+warning: unused import: `Radix2EvaluationDomain`
+ --> src/decoder.rs:5:34
+  |
+5 | use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
+  |                                  ^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `UniformRand`, `Zero`, `end_timer`, and `start_timer`
+ --> src/decoder.rs:6:15
+  |
+6 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |               ^^^^^^^^^  ^^^^^^^^^^^  ^^^^^^^^^^^ ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> src/decoder.rs:7:5
+  |
+7 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `CRS`, `OneKey`, `PkCombined`, `bipart_lagrange_interp_eval`, `encrypt`, `gen_batch_keys`, `hash_to_bytes`, `insert_crs`, `lagrange_interp_eval`, `open_all_values`, and `xor`
+  --> src/decoder.rs:9:14
+   |
+ 9 |     keygen::{OneKey,fetch_one_key,PkCombined,gen_batch_keys},
+   |              ^^^^^^               ^^^^^^^^^^ ^^^^^^^^^^^^^^
+10 |     crsgen::{CRS,read_crs,insert_crs},
+   |              ^^^          ^^^^^^^^^^
+11 |     decryption::{aggregate_partial_decryptions, decrypt_all,get_digest, SecretKey},
+12 |     encryption::{encrypt, Ciphertext},
+   |                  ^^^^^^^
+13 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> src/decoder.rs:16:5
+   |
+16 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_std::rand::Rng`
+  --> src/decoder.rs:17:5
+   |
+17 | use ark_std::rand::Rng;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `std::path::Path`
+ --> src/trace.rs:1:5
+  |
+1 | use std::path::Path;
+  |     ^^^^^^^^^^^^^^^
+
+warning: unused import: `std::collections::BTreeMap`
+ --> src/trace.rs:2:5
+  |
+2 | use std::collections::BTreeMap;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_bls12_381::Bls12_381`
+ --> src/trace.rs:3:5
+  |
+3 | use ark_bls12_381::Bls12_381;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> src/trace.rs:4:32
+  |
+4 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+
+warning: unused imports: `Zero`, `end_timer`, and `start_timer`
+ --> src/trace.rs:6:15
+  |
+6 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |               ^^^^^^^^^  ^^^^^^^^^^^              ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> src/trace.rs:7:5
+  |
+7 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `CRS`, `PkCombined`, `SecretKey`, `aggregate_partial_decryptions`, `bipart_lagrange_interp_eval`, `decrypt_all`, `fetch_one_key`, `gen_batch_keys`, `get_digest`, `hash_to_bytes`, `insert_crs`, `lagrange_interp_eval`, `open_all_values`, and `xor`
+  --> src/trace.rs:9:21
+   |
+ 9 |     keygen::{OneKey,fetch_one_key,PkCombined,gen_batch_keys, fetch_batch_of_keys},
+   |                     ^^^^^^^^^^^^^ ^^^^^^^^^^ ^^^^^^^^^^^^^^
+10 |     crsgen::{CRS,read_crs,insert_crs},
+   |              ^^^          ^^^^^^^^^^
+11 |     decryption::{aggregate_partial_decryptions, decrypt_all,get_digest, SecretKey},
+   |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^ ^^^^^^^^^^  ^^^^^^^^^
+...
+15 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> src/trace.rs:18:5
+   |
+18 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ark_std::rand::Rng`
+  --> src/trace.rs:19:5
+   |
+19 | use ark_std::rand::Rng;
+   |     ^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/trace.rs:17:21
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused import: `One`
+ --> src/utils.rs:8:15
+  |
+8 | use ark_std::{One, Zero};
+  |               ^^^
+
+warning: unused import: `domain::EvaluationDomain`
+ --> src/keygen.rs:4:16
+  |
+4 | use ark_poly::{domain::EvaluationDomain};
+  |                ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/encryption.rs:17:21
+   |
+17 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused import: `EvaluationDomain`
+ --> src/decoder.rs:5:16
+  |
+5 | use ark_poly::{EvaluationDomain, Radix2EvaluationDomain};
+  |                ^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> src/decoder.rs:15:21
+   |
+15 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: unused variable: `e`
+  --> src/crsgen.rs:91:13
+   |
+91 |         Err(e) => {
+   |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:100:13
+    |
+100 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:110:13
+    |
+110 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/crsgen.rs:132:13
+    |
+132 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `g`
+  --> src/keygen.rs:56:13
+   |
+56 |         let g = E::G1::generator(); // g is not used, consider removing if it's not needed later.
+   |             ^ help: if this is intentional, prefix it with an underscore: `_g`
+
+warning: unused variable: `h`
+  --> src/keygen.rs:57:13
+   |
+57 |         let h = E::G2::generator();       
+   |             ^ help: if this is intentional, prefix it with an underscore: `_h`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:179:13
+    |
+179 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:188:13
+    |
+188 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:198:13
+    |
+198 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `e`
+   --> src/keygen.rs:220:13
+    |
+220 |         Err(e) => {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_e`
+
+warning: unused variable: `sig`
+  --> src/encryption.rs:38:26
+   |
+38 |     pub fn verify(&self, sig: E::G1) {
+   |                          ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: unused variable: `sig_sk`
+  --> src/encryption.rs:81:10
+   |
+81 |     let (sig_sk, sig_pk, varphi) = result.unwrap();
+   |          ^^^^^^ help: if this is intentional, prefix it with an underscore: `_sig_sk`
+
+warning: unused variable: `delta`
+  --> src/decryption.rs:94:9
+   |
+94 |     let delta = h_j_bid + com;
+   |         ^^^^^ help: if this is intentional, prefix it with an underscore: `_delta`
+
+warning: unused variable: `current_marks`
+   --> src/fincode.rs:124:9
+    |
+124 |     let current_marks = w_star.iter().filter(|&&b| b == '?').count();
+    |         ^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_current_marks`
+
+warning: variable does not need to be mutable
+   --> src/fincode.rs:239:9
+    |
+239 |     let mut threshold = max.floor(); // Example threshold for Z-score
+    |         ----^^^^^^^^^
+    |         |
+    |         help: remove this `mut`
+    |
+    = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:36:5
+   |
+36 |     mut coalition_size: usize,
+   |     ----^^^^^^^^^^^^^^
+   |     |
+   |     help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:41:13
+   |
+41 |         let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
+   |             ----^^^^^^^^^^^^^^^
+   |             |
+   |             help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> src/trace.rs:47:13
+   |
+47 |         let mut key_batch_size = 500; // read keys in batches
+   |             ----^^^^^^^^^^^^^^
+   |             |
+   |             help: remove this `mut`
+
+warning: unused variable: `t`
+  --> src/trace.rs:34:5
+   |
+34 |     t: usize,
+   |     ^ help: if this is intentional, prefix it with an underscore: `_t`
+
+warning: unused variable: `sig`
+   --> src/trace.rs:146:26
+    |
+146 |                 let (cxt,sig) = encrypt::<E>(msg, x, h_j_bid, crs.htau, key.pk_combined.clone(), &mut rng);
+    |                          ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: unused variable: `dec_suc_111`
+   --> src/trace.rs:204:20
+    |
+204 |                let dec_suc_111=true;
+    |                    ^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_dec_suc_111`
+
+warning: value assigned to `fetch_batch_size` is never read
+  --> src/trace.rs:83:44
+   |
+83 |                 let mut fetch_batch_size = key_batch_size;
+   |                                            ^^^^^^^^^^^^^^
+   |
+   = help: maybe it is overwritten before being read?
+   = note: `#[warn(unused_assignments)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `DB_PATH` is never used
+  --> src/crsgen.rs:11:7
+   |
+11 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `DB_PATH` is never used
+  --> src/keygen.rs:17:7
+   |
+17 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `DB_PATH` is never used
+  --> src/encryption.rs:21:7
+   |
+21 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/encryption.rs:22:7
+   |
+22 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/encryption.rs:23:7
+   |
+23 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: function `percentile` is never used
+   --> src/fincode.rs:206:4
+    |
+206 | fn percentile(sorted: &[f64], p: f64) -> f64 {
+    |    ^^^^^^^^^^
+
+warning: constant `DB_PATH` is never used
+  --> src/decoder.rs:19:7
+   |
+19 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/decoder.rs:20:7
+   |
+20 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/decoder.rs:21:7
+   |
+21 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: type alias `E` is never used
+  --> src/decoder.rs:24:6
+   |
+24 | type E = Bls12_381;
+   |      ^
+
+warning: type alias `Fr` is never used
+  --> src/decoder.rs:25:6
+   |
+25 | type Fr = <E as Pairing>::ScalarField;
+   |      ^^
+
+warning: type alias `G1` is never used
+  --> src/decoder.rs:26:6
+   |
+26 | type G1 = <E as Pairing>::G1;
+   |      ^^
+
+warning: constant `DB_PATH` is never used
+  --> src/trace.rs:22:7
+   |
+22 | const DB_PATH: &str = "ttbe_database.redb";
+   |       ^^^^^^^
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> src/trace.rs:23:7
+   |
+23 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> src/trace.rs:24:7
+   |
+24 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: structure field `X` should have a snake case name
+  --> src/keygen.rs:33:9
+   |
+33 |     pub X: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `x`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: structure field `Y` should have a snake case name
+  --> src/keygen.rs:34:9
+   |
+34 |     pub Y: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `y`
+
+warning: structure field `Z` should have a snake case name
+  --> src/keygen.rs:35:9
+   |
+35 |     pub Z: E::G2,
+   |         ^ help: convert the identifier to snake case (notice the capitalization): `z`
+
+warning: variable `X` should have a snake case name
+  --> src/keygen.rs:97:13
+   |
+97 |         let X = E::G2::generator() * (sk_alpha * sk_y * sk_z);
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `x`
+
+warning: variable `Y` should have a snake case name
+  --> src/keygen.rs:98:13
+   |
+98 |         let Y = E::G2::generator() * sk_y;
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `y`
+
+warning: variable `Z` should have a snake case name
+  --> src/keygen.rs:99:13
+   |
+99 |         let Z = E::G2::generator() * sk_z;
+   |             ^ help: convert the identifier to snake case (notice the capitalization): `z`
+
+warning: `traceable-batch-threshold` (lib) generated 73 warnings (run `cargo fix --lib -p traceable-batch-threshold` to apply 44 suggestions)
+warning: unused imports: `PrimeGroup` and `VariableBaseMSM`
+ --> examples/endtoend.rs:6:32
+  |
+6 | use ark_ec::{pairing::Pairing, PrimeGroup, VariableBaseMSM};
+  |                                ^^^^^^^^^^  ^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Zero`
+ --> examples/endtoend.rs:8:51
+  |
+8 | use ark_std::{end_timer, start_timer, UniformRand,Zero};
+  |                                                   ^^^^
+
+warning: unused import: `ark_ff::Field`
+ --> examples/endtoend.rs:9:5
+  |
+9 | use ark_ff::Field;
+  |     ^^^^^^^^^^^^^
+
+warning: unused imports: `OneKey`, `bipart_lagrange_interp_eval`, `decoder`, `fetch_batch_of_keys`, `hash_to_bytes`, `lagrange_interp_eval`, `open_all_values`, `tracing_algorithm`, and `xor`
+  --> examples/endtoend.rs:11:36
+   |
+11 |     keygen::{SkCombined,PkCombined,OneKey,fetch_one_key,gen_batch_keys, fetch_batch_of_keys},
+   |                                    ^^^^^^                               ^^^^^^^^^^^^^^^^^^^
+...
+15 |     fincode::{code_generator,tracing_algorithm},
+   |                              ^^^^^^^^^^^^^^^^^
+16 |     decoder::{decoder},
+   |               ^^^^^^^
+17 |     utils::{hash_to_bytes, bipart_lagrange_interp_eval, lagrange_interp_eval, open_all_values, xor},
+   |             ^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^^^^  ^^^
+
+warning: unused import: `std::result::Result`
+  --> examples/endtoend.rs:20:5
+   |
+20 | use std::result::Result;
+   |     ^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `ReadableTable`
+  --> examples/endtoend.rs:19:21
+   |
+19 | use redb::{Database,ReadableTable, TableDefinition};
+   |                     ^^^^^^^^^^^^^
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:84:9
+   |
+84 |     let mut code_constant: usize = if args.len() > 4 {
+   |         ----^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+   |
+   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:89:9
+   |
+89 |     let mut coalition_size: usize = if args.len() > 5 {
+   |         ----^^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:95:9
+   |
+95 |     let mut t = coalition_size - 1;    // threshold <=t secret sharing can not decrypt
+   |         ----^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+  --> examples/endtoend.rs:98:9
+   |
+98 |     let mut corrupt_indices: Vec<usize> = (0..coalition_size).collect();
+   |         ----^^^^^^^^^^^^^^^
+   |         |
+   |         help: remove this `mut`
+
+warning: variable does not need to be mutable
+   --> examples/endtoend.rs:110:9
+    |
+110 |     let mut db: Database;
+    |         ----^^
+    |         |
+    |         help: remove this `mut`
+
+warning: unused variable: `start_pos`
+  --> examples/endtoend.rs:96:9
+   |
+96 |     let start_pos = 0;
+   |         ^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_start_pos`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `p_array`
+   --> examples/endtoend.rs:104:10
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |          ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_p_array`
+
+warning: unused variable: `x_matrix`
+   --> examples/endtoend.rs:104:19
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |                   ^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_x_matrix`
+
+warning: unused variable: `f_array`
+   --> examples/endtoend.rs:104:29
+    |
+104 |     let (p_array, x_matrix, f_array, x_bar_matrix)=code_generator(n, coalition_size, code_constant);
+    |                             ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_f_array`
+
+warning: unused variable: `sig`
+   --> examples/endtoend.rs:184:18
+    |
+184 |         let (cxt,sig) = encrypt::<E>(msg, x, h_j_bid, crs.htau, key.pk_combined.clone(), &mut rng);
+    |                  ^^^ help: if this is intentional, prefix it with an underscore: `_sig`
+
+warning: constant `KEY_TABLE_DEF` is never used
+  --> examples/endtoend.rs:26:7
+   |
+26 | const KEY_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("key_table");
+   |       ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: constant `CRS_TABLE_DEF` is never used
+  --> examples/endtoend.rs:27:7
+   |
+27 | const CRS_TABLE_DEF: TableDefinition<&str, Vec<u8>> = TableDefinition::new("crs_table");
+   |       ^^^^^^^^^^^^^
+
+warning: type alias `G2` is never used
+  --> examples/endtoend.rs:33:6
+   |
+33 | type G2 = <E as Pairing>::G2;
+   |      ^^
+
+warning: `traceable-batch-threshold` (example "endtoend") generated 19 warnings (run `cargo fix --example "endtoend" -p traceable-batch-threshold` to apply 15 suggestions)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.47s
+     Running `target/debug/examples/endtoend --nocapture 128 32 5`
+╔═════════════════════════════════════════════════════════════╗
+║      Traceable Batch Threshold Encryption — End-to-End      ║
+╠═════════════════════════════════════════════════════════════╣
+║  Batch size :  128    Users (n) :  32    Code constant :   5║
+║  Coalition  :   16    Total keys :   8960                   ║
+╚═════════════════════════════════════════════════════════════╝
+
+Start:   Key Generation
+··End:     Key Generation ..........................................................77.938s
+Start:   Encryption
+··End:     Encryption ..............................................................2.979s
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................20.650ms
+Start:   Combine
+··End:     Combine .................................................................1.417ms
+Start:   Decryption
+··End:     Decryption ..............................................................1.108s
+
+┌─────────────────────────────────────────────────────────────┐
+│                     Communication Costs                     │
+├──────────────────────────────────────┬──────────────────────┤
+│   Secret key  (8960 keys)            │              18.5 MB │
+│   Public key + CRS                   │               2.5 MB │
+│   Ciphertext  (per batch)            │                544 B │
+│   Partial decryption (per user)      │                 57 B │
+│   Sigma  (aggregated)                │                 96 B │
+└──────────────────────────────────────┴──────────────────────┘
+   Compiling traceable-batch-threshold v0.1.0 (/home/anirban/crypto/git/traBatchTEnc)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 9.00s
+     Running `target/debug/examples/endtoend --nocapture 128 64 5`
+╔═════════════════════════════════════════════════════════════╗
+║      Traceable Batch Threshold Encryption — End-to-End      ║
+╠═════════════════════════════════════════════════════════════╣
+║  Batch size :  128    Users (n) :  64    Code constant :   5║
+║  Coalition  :   32    Total keys :  61440                   ║
+╚═════════════════════════════════════════════════════════════╝
+
+Start:   Key Generation

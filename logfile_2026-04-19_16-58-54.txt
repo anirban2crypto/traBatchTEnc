@@ -1,0 +1,85 @@
+╔═════════════════════════════════════════════════════════════╗
+║                                                             ║
+║       Traceable Batch Threshold Encryption — Benchmarks   ║
+╠═════════════════════════════════════════════════════════════╣
+║  Host    : anirban-UX430UQ                                  ║
+║  CPU     : Intel(R) Core(TM) i5-7200U CPU @ 2.50GHz         ║
+║  Cores   : 4 logical / 2 physical per socket                ║
+║  RAM     : 7.6Gi total                                      ║
+║  OS      : Linux 6.17.0-20-generic x86_64                   ║
+║  Rust    : rustc 1.94.1 (e408947bf 2026-03-25)              ║
+║  Date    : 2026-04-19 16:58:54                              ║
+╚═════════════════════════════════════════════════════════════╝
+
+── Table: varying batch size B (n=8..64, fixed code structure) ──────────────
+   Compiling traceable-batch-threshold v0.1.0 (/home/anirban/crypto/git/traBatchTEnc)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.54s
+     Running `target/debug/examples/endtoend --nocapture 128 8 30`
+╔═════════════════════════════════════════════════════════════╗
+║      Traceable Batch Threshold Encryption — End-to-End      ║
+╠═════════════════════════════════════════════════════════════╣
+║  Batch size :  128    Users (n) :   8    Code constant :  30║
+║  Coalition  :    4    Total keys :    480                   ║
+╚═════════════════════════════════════════════════════════════╝
+
+Start:   Key Generation
+··End:     Key Generation ..........................................................2.497s
+Start:   Encryption
+··End:     Encryption ..............................................................2.836s
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................15.611ms
+Start:   Combine
+··End:     Combine .................................................................431.579µs
+Start:   Decryption
+··End:     Decryption ..............................................................1.013s
+
+┌─────────────────────────────────────────────────────────────┐
+│                     Communication Costs                     │
+├──────────────────────────────────────┬──────────────────────┤
+│   Secret key  (480 keys)             │               292 KB │
+│   Public key + CRS                   │               153 KB │
+│   Ciphertext  (per batch)            │                544 B │
+│   Partial decryption (per user)      │                 57 B │
+│   Sigma  (aggregated)                │                 96 B │
+└──────────────────────────────────────┴──────────────────────┘
+   Compiling traceable-batch-threshold v0.1.0 (/home/anirban/crypto/git/traBatchTEnc)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.43s
+     Running `target/debug/examples/endtoend --nocapture 128 16 10`
+╔═════════════════════════════════════════════════════════════╗
+║      Traceable Batch Threshold Encryption — End-to-End      ║
+╠═════════════════════════════════════════════════════════════╣
+║  Batch size :  128    Users (n) :  16    Code constant :  10║
+║  Coalition  :    8    Total keys :   2560                   ║
+╚═════════════════════════════════════════════════════════════╝
+
+Start:   Key Generation
+··End:     Key Generation ..........................................................14.500s
+Start:   Encryption
+··End:     Encryption ..............................................................2.839s
+Start:   Partial Decryptions
+··End:     Partial Decryptions .....................................................15.003ms
+Start:   Combine
+··End:     Combine .................................................................714.034µs
+Start:   Decryption
+··End:     Decryption ..............................................................1.091s
+
+┌─────────────────────────────────────────────────────────────┐
+│                     Communication Costs                     │
+├──────────────────────────────────────┬──────────────────────┤
+│   Secret key  (2560 keys)            │               2.8 MB │
+│   Public key + CRS                   │               738 KB │
+│   Ciphertext  (per batch)            │                544 B │
+│   Partial decryption (per user)      │                 57 B │
+│   Sigma  (aggregated)                │                 96 B │
+└──────────────────────────────────────┴──────────────────────┘
+   Compiling traceable-batch-threshold v0.1.0 (/home/anirban/crypto/git/traBatchTEnc)
+    Finished `dev` profile [optimized + debuginfo] target(s) in 0.43s
+     Running `target/debug/examples/endtoend --nocapture 128 32 5`
+╔═════════════════════════════════════════════════════════════╗
+║      Traceable Batch Threshold Encryption — End-to-End      ║
+╠═════════════════════════════════════════════════════════════╣
+║  Batch size :  128    Users (n) :  32    Code constant :   5║
+║  Coalition  :   16    Total keys :   8960                   ║
+╚═════════════════════════════════════════════════════════════╝
+
+Start:   Key Generation
